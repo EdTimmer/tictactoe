@@ -89,3 +89,21 @@
   justify-content: center;
   align-items: center;
 }
+
+/*
+td {
+  border: 1px solid #333;
+  height: 100px;
+  width: 100px;
+  border-style: solid;
+  border-width: 15px;
+  visibility: hidden;
+  }
+  
+table {
+  position:absolute;
+  left:50%;
+  margin-left:-150px;
+  top:10%;
+}
+*/
