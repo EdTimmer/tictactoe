@@ -127,9 +127,9 @@ const App = () => {
     document.getElementById('boxes').style.pointerEvents = 'none';
   }
 
-  // if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "") {
-  //   message = "Draw!";    
-  // }
+  if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "" && message !== "X Wins!" && message !== "O Wins!") {
+    message = "Draw!";    
+  }
 
   return (
     <div className="App">
