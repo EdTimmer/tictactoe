@@ -4,6 +4,8 @@ import o from './images/o.png';
 
 import './App.css';
 
+let arr;
+
 const App = () => {
   const [box1Sign, setBox1Sign] = useState("");
   const [box2Sign, setBox2Sign] = useState("");
@@ -14,52 +16,79 @@ const App = () => {
   const [box7Sign, setBox7Sign] = useState("");
   const [box8Sign, setBox8Sign] = useState("");
   const [box9Sign, setBox9Sign] = useState("");
+  // const [arr, setArr] = useState()
 
-  const [box1HasMove, setBox1HasMove] = useState(true);
-  const [box2HasMove, setBox2HasMove] = useState(true);
-  const [box3HasMove, setBox3HasMove] = useState(true);
-  const [box4HasMove, setBox4HasMove] = useState(true);
-  const [box5HasMove, setBox5HasMove] = useState(true);
-  const [box6HasMove, setBox6HasMove] = useState(true);
-  const [box7HasMove, setBox7HasMove] = useState(true);
-  const [box8HasMove, setBox8HasMove] = useState(true);
-  const [box9HasMove, setBox9HasMove] = useState(true);
-
-  const [flipSign, setFlipSign] = useState(true);
-
-  // const [message, setMessage] = useState("");
+  // const [flipSign, setFlipSign] = useState(true);
+  arr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
 
   let message = "";
+  // let toFilterBoxSignArr;
+  // let filteredArr;
+
+  const removeBox = (n) => {
+    // const toFilterBoxSignArr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
+    // toFilterBoxSignArr[n-1] = "taken";
+    arr[n-1] = "taken";
+    const filteredArr = arr.filter(element => element !== "taken");    
+    console.log('filteredArr length :', filteredArr.length);
+    
+    const getRandomInt = (min, max) => {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    let randomNumber = getRandomInt(0, filteredArr.length - 1);
+    const randomBoxToCircleFunc = filteredArr[randomNumber];
+    return randomBoxToCircleFunc;
+
+  }
+
+
+  let toFilterBoxSignArr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
 
   const mark = (n) => {
+
+    const boxSignArr = [box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign];
+    const selectedBox = boxSignArr[n - 1];
     
-    const boxesArr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
-    const signFunc = boxesArr[n-1];
-
-    const boxHasMoveArr = [box1HasMove, box2HasMove, box3HasMove, box4HasMove, box5HasMove, box6HasMove, box7HasMove, box8HasMove, box9HasMove];
-    const hasMove = boxHasMoveArr[n - 1];
-
-    const changeHasMoveArr = [setBox1HasMove, setBox2HasMove, setBox3HasMove, setBox4HasMove, setBox5HasMove, setBox6HasMove, setBox7HasMove, setBox8HasMove, setBox9HasMove];
-    const changeHasMoveFunc = changeHasMoveArr[n - 1];
-
-    const initialBoxesArr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
-    const initialChangeHasMoveArr = [box1HasMove, box2HasMove, box3HasMove, box4HasMove, box5HasMove, box6HasMove, box7HasMove, box8HasMove, box9HasMove];
-
+    const setBoxSignArr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
+    const signFunc = setBoxSignArr[n-1];
+   
     
-    if (hasMove && flipSign) {      
+    if (selectedBox === "") {    
       signFunc(x);
-      changeHasMoveFunc(false);
-      setFlipSign(false);
+      // setFlipSign(false);
+
+
+      // toFilterBoxSignArr[n-1] = "taken";
+
+      // filteredArr = toFilterBoxSignArr.filter(element => element !== "taken");
+      // console.log('filteredArr :', filteredArr.length);
+        
+      // const getRandomInt = (min, max) => {
+      //   min = Math.ceil(min);
+      //   max = Math.floor(max);
+      //   return Math.floor(Math.random() * (max - min + 1)) + min;
+      // }
+  
+      // let randomNumber = getRandomInt(0, filteredArr.length - 1);
+      // const randomBoxToCircleFunc = filteredArr[randomNumber];
+      // randomBoxToCircleFunc(o);
+    
+
+      let zeroMove = removeBox(n);
+
+      zeroMove(o);
+      // setFlipSign(true);
     }
 
-    else if (hasMove && !flipSign) {      
-      signFunc(o);
-      changeHasMoveFunc(false);
-      setFlipSign(true);
-    }
-
-    console.log('box1Sign is: ', box1Sign)
-
+    // else if (selectedBox === "" && !flipSign) {      
+    //   signFunc(o);
+    //   // const filteredBoxSignArr = boxSignArr.filter( element => element === "");  
+    //   // console.log('filteredBoxSignArr :', filteredBoxSignArr);
+    //   setFlipSign(true);
+    // }
   }
 
   const reset = () => {
@@ -73,18 +102,7 @@ const App = () => {
     setBox7Sign("");
     setBox8Sign("");
     setBox9Sign("");
-  
-    setBox1HasMove(true);
-    setBox2HasMove(true);
-    setBox3HasMove(true);
-    setBox4HasMove(true);
-    setBox5HasMove(true);
-    setBox6HasMove(true);
-    setBox7HasMove(true);
-    setBox8HasMove(true);
-    setBox9HasMove(true);
-
-    setFlipSign(true);
+    // setFlipSign(true);
   }
 
   //horizontal win
