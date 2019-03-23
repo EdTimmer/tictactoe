@@ -4,7 +4,7 @@ import o from './images/o.png';
 
 import './App.css';
 
-let arr;
+let availableIndArr = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
 const App = () => {
   const [box1Sign, setBox1Sign] = useState("");
@@ -16,36 +16,45 @@ const App = () => {
   const [box7Sign, setBox7Sign] = useState("");
   const [box8Sign, setBox8Sign] = useState("");
   const [box9Sign, setBox9Sign] = useState("");
-  // const [arr, setArr] = useState()
-
-  // const [flipSign, setFlipSign] = useState(true);
-  arr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
 
   let message = "";
-  // let toFilterBoxSignArr;
-  // let filteredArr;
+  let endGame = false;
+
+  let arr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
 
   const removeBox = (n) => {
-    // const toFilterBoxSignArr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
-    // toFilterBoxSignArr[n-1] = "taken";
-    arr[n-1] = "taken";
-    const filteredArr = arr.filter(element => element !== "taken");    
-    console.log('filteredArr length :', filteredArr.length);
-    
+    availableIndArr.splice(n-1, 1, "taken");
+
+    let newArr = [];
+    for (let i = 0; i < availableIndArr.length; i++) {
+      if (availableIndArr[i] !== "taken") {
+        newArr.push(arr[availableIndArr[i]]);
+      }      
+    } 
+   
     const getRandomInt = (min, max) => {
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    let randomNumber = getRandomInt(0, filteredArr.length - 1);
-    const randomBoxToCircleFunc = filteredArr[randomNumber];
-    return randomBoxToCircleFunc;
+    let randomNumber = getRandomInt(0, newArr.length - 1);
+    const changeRandomBox = newArr[randomNumber];
+
+    for (let i = 0; i < availableIndArr.length; i++) {
+      if (changeRandomBox === arr[i]) {
+        availableIndArr.splice(i, 1, "taken");
+      }
+    }
+
+    if (newArr.length < 1) {
+      endGame = true;
+    }
+
+    console.log(availableIndArr);
+    return changeRandomBox;
 
   }
-
-
-  let toFilterBoxSignArr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
 
   const mark = (n) => {
 
@@ -54,44 +63,20 @@ const App = () => {
     
     const setBoxSignArr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
     const signFunc = setBoxSignArr[n-1];
-   
+    
     
     if (selectedBox === "") {    
       signFunc(x);
-      // setFlipSign(false);
-
-
-      // toFilterBoxSignArr[n-1] = "taken";
-
-      // filteredArr = toFilterBoxSignArr.filter(element => element !== "taken");
-      // console.log('filteredArr :', filteredArr.length);
-        
-      // const getRandomInt = (min, max) => {
-      //   min = Math.ceil(min);
-      //   max = Math.floor(max);
-      //   return Math.floor(Math.random() * (max - min + 1)) + min;
-      // }
-  
-      // let randomNumber = getRandomInt(0, filteredArr.length - 1);
-      // const randomBoxToCircleFunc = filteredArr[randomNumber];
-      // randomBoxToCircleFunc(o);
-    
-
-      let zeroMove = removeBox(n);
-
-      zeroMove(o);
-      // setFlipSign(true);
+      let myFunc = removeBox(n);
+      
+      if (!endGame) {
+        myFunc(o);
+      }
     }
-
-    // else if (selectedBox === "" && !flipSign) {      
-    //   signFunc(o);
-    //   // const filteredBoxSignArr = boxSignArr.filter( element => element === "");  
-    //   // console.log('filteredBoxSignArr :', filteredBoxSignArr);
-    //   setFlipSign(true);
-    // }
   }
 
   const reset = () => {
+    availableIndArr = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     document.getElementById('boxes').style.pointerEvents = 'auto';
     setBox1Sign("");
     setBox2Sign("");
@@ -102,7 +87,6 @@ const App = () => {
     setBox7Sign("");
     setBox8Sign("");
     setBox9Sign("");
-    // setFlipSign(true);
   }
 
   //horizontal win
@@ -142,6 +126,10 @@ const App = () => {
     message = box3Sign === x ? "X Wins!" : "O Wins!";    
     document.getElementById('boxes').style.pointerEvents = 'none';
   }
+
+  // if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "") {
+  //   message = "Draw!";    
+  // }
 
   return (
     <div className="App">
