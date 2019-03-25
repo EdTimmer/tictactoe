@@ -6,6 +6,7 @@ import './App.css';
 
 let availableIndArr = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 let endGame = false;
+let num = 0;
 // let myFunc;
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
   const [box7Sign, setBox7Sign] = useState("");
   const [box8Sign, setBox8Sign] = useState("");
   const [box9Sign, setBox9Sign] = useState("");
+  const [oShouldMove, setOShouldMove] = useState(false);
 
   let message = "";  
 
@@ -58,17 +60,22 @@ const App = () => {
 
   }
 
-  const mark = (n) => {
+  const xMove = (n) => {
 
     const boxSignArr = [box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign];
+
     const selectedBox = boxSignArr[n - 1];
     
     const setBoxSignArr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
-    const signFunc = setBoxSignArr[n-1];
+
+    const markBox = setBoxSignArr[n-1];
     
     
     if (selectedBox === "") {    
-      signFunc(x);
+      num = n;
+      markBox(x);
+      setOShouldMove(true);
+      console.log('box1Sign in xMove function is: ', box1Sign);
 
       // let myFunc = removeBox(n);
       
@@ -86,9 +93,11 @@ const App = () => {
 
   const oMove = async (n) => {
 
-    // await mark(n);
+    // await xMove(n);
 
     let myFunc = removeBox(n);
+
+    console.log('box1Sign in oMove function is: ', box1Sign);
 
     if (box1Sign !== "" && box1Sign === box2Sign && box2Sign === box3Sign) {
       endGame = true;
@@ -124,8 +133,6 @@ const App = () => {
       endGame = true;   
     }
 
-    console.log('box1Sign in oMove function: ', box1Sign);
-
     if (!endGame) {
         
       const timer = m => new Promise(r => setTimeout(r, m));
@@ -136,9 +143,18 @@ const App = () => {
     }
   }
 
+  const sequence = async (n) => {
+    await xMove(n);    
+    // await oMove(n);
+  }
+
+  // sequence.then(() => console.log('box1Sign in sequnce function is: ', box1Sign));
+
   const reset = () => {
     availableIndArr = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     document.getElementById('boxes').style.pointerEvents = 'auto';
+    num = 0;
+    endGame = false;
     setBox1Sign("");
     setBox2Sign("");
     setBox3Sign("");
@@ -148,6 +164,7 @@ const App = () => {
     setBox7Sign("");
     setBox8Sign("");
     setBox9Sign("");
+    setOShouldMove(false);
   }
 
 // const checkForWin = () => {
@@ -194,7 +211,56 @@ const App = () => {
     message = "Draw!";    
   }
 
-  useEffect(() => console.log('box1Sign in useEffect is: ', box1Sign))
+  useEffect(() => {
+    if (oShouldMove) {
+      let myFunc = removeBox(num);
+
+      if (box1Sign !== "" && box1Sign === box2Sign && box2Sign === box3Sign) {
+        endGame = true;
+      }
+      if (box4Sign !== "" && box4Sign === box5Sign && box5Sign === box6Sign) {
+        endGame = true;
+      }
+      if (box7Sign !== "" && box7Sign === box8Sign && box8Sign === box9Sign) {
+        endGame = true;
+      }
+    
+      //vertical win
+      if (box1Sign !== "" && box1Sign === box4Sign && box4Sign === box7Sign) {
+        endGame = true;
+      }
+      if (box2Sign !== "" && box2Sign === box5Sign && box5Sign === box8Sign) {
+        endGame = true;
+      }
+      if (box3Sign !== "" && box3Sign === box6Sign && box6Sign === box9Sign) {
+        endGame = true;
+      }
+    
+      //diagonal win
+      if (box1Sign !== "" && box1Sign === box5Sign && box5Sign === box9Sign) {
+        endGame = true;
+      }
+      if (box3Sign !== "" && box3Sign === box5Sign && box5Sign === box7Sign) {
+        endGame = true;
+      }
+    
+      //draw
+      if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "" && message !== "X Wins!" && message !== "O Wins!") {
+        endGame = true;   
+      }
+  
+      if (!endGame) {
+          
+        const timer = m => new Promise(r => setTimeout(r, m));
+        (async () => {
+          await timer(500)
+          .then(() => myFunc(o));
+        })();
+        setOShouldMove(false);
+      }
+    }
+    
+  })
 
   
 
@@ -220,51 +286,48 @@ const App = () => {
 
       <div id="boxes" className="grid-container">
 
-        <div className="grid-item box1" onClick={() => {mark(1); oMove(1)}}>        
+        <div className="grid-item box1" onClick={() => xMove(1)}>        
           {
             box1Sign ? <img src={box1Sign} className="image" alt="sign" /> : null
           }        
         </div>
-
-        <div className="grid-item box2" onClick={() => {mark(2); oMove(2)}}>
+        <div className="grid-item box2" onClick={() => xMove(2)}>
           {
             box2Sign ? <img src={box2Sign} className="image" alt="sign" /> : null
           }        
         </div>
-
-        <div className="grid-item box3" onClick={() => {mark(3); oMove(3)}}>
+        <div className="grid-item box3" onClick={() => xMove(3)}>
           {
             box3Sign ? <img src={box3Sign} className="image" alt="sign" /> : null
           }        
         </div>
-
-        <div className="grid-item box4" onClick={() => {mark(4); oMove(4)}}>
+        <div className="grid-item box4" onClick={() => xMove(4)}>
           {
             box4Sign ? <img src={box4Sign} className="image" alt="sign" /> : null
           }        
         </div>
-        <div className="grid-item box5" onClick={() => {mark(5); oMove(5)}}>
+        <div className="grid-item box5" onClick={() => xMove(5)}>
           {
             box5Sign ? <img src={box5Sign} className="image" alt="sign" /> : null
           }        
         </div>
-        <div className="grid-item box6" onClick={() => {mark(6); oMove(6)}}>
+        <div className="grid-item box6" onClick={() => xMove(6)}>
           {
             box6Sign ? <img src={box6Sign} className="image" alt="sign" /> : null
           }        
         </div>
 
-        <div className="grid-item box7" onClick={() => {mark(7); oMove(7)}}>
+        <div className="grid-item box7" onClick={() => xMove(7)}>
           {
             box7Sign ? <img src={box7Sign} className="image" alt="sign" /> : null
           }        
         </div>
-        <div className="grid-item box8" onClick={() => {mark(8); oMove(8)}}>
+        <div className="grid-item box8" onClick={() => xMove(8)}>
           {
             box8Sign ? <img src={box8Sign} className="image" alt="sign" /> : null
           }        
         </div>
-        <div className="grid-item box9" onClick={() => {mark(9); oMove(9)}}>
+        <div className="grid-item box9" onClick={() => xMove(9)}>
           {
             box9Sign ? <img src={box9Sign} className="image" alt="sign" /> : null
           }        
