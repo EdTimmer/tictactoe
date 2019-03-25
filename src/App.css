@@ -6,7 +6,7 @@
   display: grid;
   grid-template-columns: auto auto auto;
   justify-content: center;
-  margin-top: 5rem;
+  /* margin-top: 5rem; */
 }
 
 .grid-item {
@@ -84,10 +84,26 @@
 }
 
 .message {
-  height: 5rem;
+  height: 15rem;
+  /* margin: 5rem auto 5rem auto; */
+  font-size: 5rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.title {
+  margin: 5rem auto 5rem auto;
+  font-size: 5rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.reset-button {
+  width: 10rem;
+  height: 5rem;
+  font-size: 2rem;
+  border-radius: 10%;
 }
 
 /*
