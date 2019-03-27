@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import x from './images/x.png';
 import o from './images/o.png';
-
 import './App.css';
+import myGlobalVar from './globalvar';
 
-let availableIndArr = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-let endGame = false;
-let num = 0;
-// let myFunc;
 
 const App = () => {
   const [box1Sign, setBox1Sign] = useState("");
@@ -20,18 +16,19 @@ const App = () => {
   const [box8Sign, setBox8Sign] = useState("");
   const [box9Sign, setBox9Sign] = useState("");
   const [oShouldMove, setOShouldMove] = useState(false);
-
+  
+  let endGame = false;
   let message = "";  
 
-  let arr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
+  let arrOfSetters = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
 
   const removeBox = (n) => {
-    availableIndArr.splice(n-1, 1, "taken");
+    myGlobalVar.availableIndArr.splice(n-1, 1, "taken");
 
-    let newArr = [];
-    for (let i = 0; i < availableIndArr.length; i++) {
-      if (availableIndArr[i] !== "taken") {
-        newArr.push(arr[availableIndArr[i]]);
+    let filteredSetters = [];
+    for (let i = 0; i < myGlobalVar.availableIndArr.length; i++) {
+      if (myGlobalVar.availableIndArr[i] !== "taken") {
+        filteredSetters.push(arrOfSetters[myGlobalVar.availableIndArr[i]]);
       }      
     } 
    
@@ -41,23 +38,20 @@ const App = () => {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    let randomNumber = getRandomInt(0, newArr.length - 1);
-    const changeRandomBox = newArr[randomNumber];
+    let randomNumber = getRandomInt(0, filteredSetters.length - 1);
+    const nextOBoxSetter = filteredSetters[randomNumber];
 
-    for (let i = 0; i < availableIndArr.length; i++) {
-      if (changeRandomBox === arr[i]) {
-        availableIndArr.splice(i, 1, "taken");
+    for (let i = 0; i < myGlobalVar.availableIndArr.length; i++) {
+      if (nextOBoxSetter === arrOfSetters[i]) {
+        myGlobalVar.availableIndArr.splice(i, 1, "taken");
       }
     }
 
-    if (newArr.length < 1) {
+    if (filteredSetters.length < 1) {
       endGame = true;      
     }
 
-    console.log('box1Sign in removeBox function is: ', box1Sign);
-
-    return changeRandomBox;
-
+    return nextOBoxSetter;
   }
 
   const xMove = (n) => {
@@ -72,89 +66,18 @@ const App = () => {
     
     
     if (selectedBox === "") {    
-      num = n;
+      myGlobalVar.num = n;
       markBox(x);
       setOShouldMove(true);
-      console.log('box1Sign in xMove function is: ', box1Sign);
-
-      // let myFunc = removeBox(n);
-      
-      // if (!endGame) {
-        
-      //   const timer = m => new Promise(r => setTimeout(r, m));
-      //   (async () => {
-      //     await timer(500)
-      //     .then(() => myFunc(o));
-      //   })();
-      // }
-    }
-
-  }
-
-  const oMove = async (n) => {
-
-    // await xMove(n);
-
-    let myFunc = removeBox(n);
-
-    console.log('box1Sign in oMove function is: ', box1Sign);
-
-    if (box1Sign !== "" && box1Sign === box2Sign && box2Sign === box3Sign) {
-      endGame = true;
-    }
-    if (box4Sign !== "" && box4Sign === box5Sign && box5Sign === box6Sign) {
-      endGame = true;
-    }
-    if (box7Sign !== "" && box7Sign === box8Sign && box8Sign === box9Sign) {
-      endGame = true;
-    }
-  
-    //vertical win
-    if (box1Sign !== "" && box1Sign === box4Sign && box4Sign === box7Sign) {
-      endGame = true;
-    }
-    if (box2Sign !== "" && box2Sign === box5Sign && box5Sign === box8Sign) {
-      endGame = true;
-    }
-    if (box3Sign !== "" && box3Sign === box6Sign && box6Sign === box9Sign) {
-      endGame = true;
-    }
-  
-    //diagonal win
-    if (box1Sign !== "" && box1Sign === box5Sign && box5Sign === box9Sign) {
-      endGame = true;
-    }
-    if (box3Sign !== "" && box3Sign === box5Sign && box5Sign === box7Sign) {
-      endGame = true;
-    }
-  
-    //draw
-    if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "" && message !== "X Wins!" && message !== "O Wins!") {
-      endGame = true;   
-    }
-
-    if (!endGame) {
-        
-      const timer = m => new Promise(r => setTimeout(r, m));
-      (async () => {
-        await timer(500)
-        .then(() => myFunc(o));
-      })();
     }
   }
-
-  const sequence = async (n) => {
-    await xMove(n);    
-    // await oMove(n);
-  }
-
-  // sequence.then(() => console.log('box1Sign in sequnce function is: ', box1Sign));
 
   const reset = () => {
-    availableIndArr = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+    myGlobalVar.availableIndArr = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     document.getElementById('boxes').style.pointerEvents = 'auto';
-    num = 0;
+    myGlobalVar.num = 0;
     endGame = false;
+    message = "";
     setBox1Sign("");
     setBox2Sign("");
     setBox3Sign("");
@@ -163,121 +86,77 @@ const App = () => {
     setBox6Sign("");
     setBox7Sign("");
     setBox8Sign("");
-    setBox9Sign("");
+    setBox9Sign("");    
     setOShouldMove(false);
   }
 
-// const checkForWin = () => {
-  //horizontal win
+  useEffect(() => {
+
+    if (oShouldMove && !endGame) {  
+
+      let myFunc = removeBox(myGlobalVar.num);
+         
+      const timer = m => new Promise(r => setTimeout(r, m));
+      (async () => {
+        await timer(500)
+        .then(() => myFunc(o));
+      })();
+      setOShouldMove(false);
+    }    
+  }, [box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign])
+
+  //horizontal win  
   if (box1Sign !== "" && box1Sign === box2Sign && box2Sign === box3Sign) {
     message = box1Sign === x ? "X Wins!" : "O Wins!";
     document.getElementById('boxes').style.pointerEvents = 'none';
+    endGame = true;
   }
   if (box4Sign !== "" && box4Sign === box5Sign && box5Sign === box6Sign) {
     message = box4Sign === x ? "X Wins!" : "O Wins!";
     document.getElementById('boxes').style.pointerEvents = 'none';
+    endGame = true;
   }
   if (box7Sign !== "" && box7Sign === box8Sign && box8Sign === box9Sign) {
     message = box7Sign === x ? "X Wins!" : "O Wins!";;
     document.getElementById('boxes').style.pointerEvents = 'none';
+    endGame = true;
   }
 
   //vertical win
   if (box1Sign !== "" && box1Sign === box4Sign && box4Sign === box7Sign) {
     message = box1Sign === x ? "X Wins!" : "O Wins!";
     document.getElementById('boxes').style.pointerEvents = 'none';
+    endGame = true;
   }
   if (box2Sign !== "" && box2Sign === box5Sign && box5Sign === box8Sign) {
     message = box2Sign === x ? "X Wins!" : "O Wins!";
     document.getElementById('boxes').style.pointerEvents = 'none';
+    endGame = true;
   }
   if (box3Sign !== "" && box3Sign === box6Sign && box6Sign === box9Sign) {
     message = box3Sign === x ? "X Wins!" : "O Wins!";
     document.getElementById('boxes').style.pointerEvents = 'none';
+    endGame = true;
   }
 
   //diagonal win
   if (box1Sign !== "" && box1Sign === box5Sign && box5Sign === box9Sign) {
     message = box1Sign === x ? "X Wins!" : "O Wins!";    
     document.getElementById('boxes').style.pointerEvents = 'none';
+    endGame = true;
   }
   if (box3Sign !== "" && box3Sign === box5Sign && box5Sign === box7Sign) {
     message = box3Sign === x ? "X Wins!" : "O Wins!";    
     document.getElementById('boxes').style.pointerEvents = 'none';
+    endGame = true;
   }
 
   //draw
-  if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "" && message !== "X Wins!" && message !== "O Wins!") {
-    message = "Draw!";    
+  if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "" && message.length === 0) {
+    message = "Draw!";
+    endGame = true;    
   }
-
-  useEffect(() => {
-    if (oShouldMove) {
-      let myFunc = removeBox(num);
-
-      if (box1Sign !== "" && box1Sign === box2Sign && box2Sign === box3Sign) {
-        endGame = true;
-      }
-      if (box4Sign !== "" && box4Sign === box5Sign && box5Sign === box6Sign) {
-        endGame = true;
-      }
-      if (box7Sign !== "" && box7Sign === box8Sign && box8Sign === box9Sign) {
-        endGame = true;
-      }
-    
-      //vertical win
-      if (box1Sign !== "" && box1Sign === box4Sign && box4Sign === box7Sign) {
-        endGame = true;
-      }
-      if (box2Sign !== "" && box2Sign === box5Sign && box5Sign === box8Sign) {
-        endGame = true;
-      }
-      if (box3Sign !== "" && box3Sign === box6Sign && box6Sign === box9Sign) {
-        endGame = true;
-      }
-    
-      //diagonal win
-      if (box1Sign !== "" && box1Sign === box5Sign && box5Sign === box9Sign) {
-        endGame = true;
-      }
-      if (box3Sign !== "" && box3Sign === box5Sign && box5Sign === box7Sign) {
-        endGame = true;
-      }
-    
-      //draw
-      if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "" && message !== "X Wins!" && message !== "O Wins!") {
-        endGame = true;   
-      }
   
-      if (!endGame) {
-          
-        const timer = m => new Promise(r => setTimeout(r, m));
-        (async () => {
-          await timer(500)
-          .then(() => myFunc(o));
-        })();
-        setOShouldMove(false);
-      }
-    }
-    
-  })
-
-  
-
-      // if (!endGame) {
-        
-      //   const timer = m => new Promise(r => setTimeout(r, m));
-      //   (async () => {
-      //     await timer(500)
-      //     .then(() => myFunc(o));
-      //   })();
-      // }
-
-  console.log('box1Sign before return is: ', box1Sign);
-
-  
-// }
-
 
   return (
     <div className="App">
