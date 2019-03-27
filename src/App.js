@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import x from './images/x.png';
 import o from './images/o.png';
+import logo from './images/logo.png';
 import './App.css';
 import myGlobalVar from './globalvar';
 
@@ -161,7 +162,11 @@ const App = () => {
   return (
     <div className="App">
 
-      <div className="title">Tic Tac Toe!</div>
+      <div className="inner-container">
+      
+      
+
+      <div className="logo"><img className="logo-image" src={logo} alt="logo" /></div>
 
       <div id="boxes" className="grid-container">
 
@@ -216,7 +221,9 @@ const App = () => {
 
       <div className="message">{message}</div>
 
-      <button className="reset-button" onClick={reset}>RESET</button>
+      <div className="reset-button" onClick={reset}>RESET</div>
+
+      </div>
 
     </div>
   );
