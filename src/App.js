@@ -17,9 +17,14 @@ const App = () => {
   const [box8Sign, setBox8Sign] = useState("");
   const [box9Sign, setBox9Sign] = useState("");
   const [oShouldMove, setOShouldMove] = useState(false);
+  const [num2, setNum2] = useState(0);
+
+  // console.log('num at top of App function is: ', myGlobalVar.num);
   
   let endGame = false;
-  let message = "";  
+  let message = "Game On!";  
+  // let num2 = 0;
+  console.log('num2 at top of App function is: ', num2);
 
   let arrOfSetters = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
 
@@ -67,7 +72,10 @@ const App = () => {
     
     
     if (selectedBox === "") {    
-      myGlobalVar.num = n;
+      // myGlobalVar.num = n;
+      setNum2(n);
+      console.log('num2 in xMove is: ', num2);
+      // console.log('num in xMove is: ', myGlobalVar.num);
       markBox(x);
       setOShouldMove(true);
     }
@@ -76,7 +84,8 @@ const App = () => {
   const reset = () => {
     myGlobalVar.availableIndArr = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     document.getElementById('boxes').style.pointerEvents = 'auto';
-    myGlobalVar.num = 0;
+    // myGlobalVar.num = 0;
+    setNum2(0);
     endGame = false;
     message = "";
     setBox1Sign("");
@@ -95,7 +104,11 @@ const App = () => {
 
     if (oShouldMove && !endGame) {  
 
-      let myFunc = removeBox(myGlobalVar.num);
+      // console.log('num in useEffect is: ', myGlobalVar.num);
+      console.log('num2 in useEffect is: ', num2);
+
+      // let myFunc = removeBox(myGlobalVar.num);
+      let myFunc = removeBox(num2);
          
       const timer = m => new Promise(r => setTimeout(r, m));
       (async () => {
@@ -153,7 +166,7 @@ const App = () => {
   }
 
   //draw
-  if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "" && message.length === 0) {
+  if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "" && message === "Game On!") {
     message = "Draw!";
     endGame = true;    
   }
@@ -218,7 +231,7 @@ const App = () => {
           
           </div>
 
-          <div className="message">{message}</div>
+          
 
          
 
@@ -229,27 +242,16 @@ const App = () => {
         <div className="right-grid-container">
 
         <div className="right-top">
-        
+          <div style={{width: "30rem"}}>
+            <div className="message">{message}</div>
+          </div>          
         </div>
 
         <div className="right-bottom">
           <div className="reset-button" onClick={reset}>RESET</div>
         </div>
 
-        </div>
-
-         {/*} <div className="right-top">
-          
-          </div>
-
-          <div className="right-bottom">
-            
-          </div>
-        
-        </div>
-      
-        {/*<div className="logo"><img className="logo-image" src={logo} alt="logo" /></div>*/}
-        
+        </div>      
 
       </div>
 
