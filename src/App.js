@@ -3,8 +3,6 @@ import x from './images/x.png';
 import o from './images/o.png';
 import logo from './images/logo.png';
 import './App.css';
-import myGlobalVar from './globalvar';
-
 
 const App = () => {
   const [box1Sign, setBox1Sign] = useState("");
@@ -17,77 +15,35 @@ const App = () => {
   const [box8Sign, setBox8Sign] = useState("");
   const [box9Sign, setBox9Sign] = useState("");
   const [oShouldMove, setOShouldMove] = useState(false);
-  const [num2, setNum2] = useState(0);
+  const [settersObj, setSettersObj] = useState({
+    1: setBox1Sign,
+    2: setBox2Sign,
+    3: setBox3Sign,
+    4: setBox4Sign,
+    5: setBox5Sign,
+    6: setBox6Sign,
+    7: setBox7Sign,
+    8: setBox8Sign,
+    9: setBox9Sign
+  })
 
-  // console.log('num at top of App function is: ', myGlobalVar.num);
-  
   let endGame = false;
   let message = "Game On!";  
-  // let num2 = 0;
-  console.log('num2 at top of App function is: ', num2);
 
-  let arrOfSetters = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
+  const xMove = (n) => {    
+    if (settersObj[n]) {    
+      settersObj[n](x);
 
-  const removeBox = (n) => {
-    myGlobalVar.availableIndArr.splice(n-1, 1, "taken");
+      let newObj = Object.assign({}, settersObj);
+      delete newObj[n];
+      setSettersObj(newObj)
 
-    let filteredSetters = [];
-    for (let i = 0; i < myGlobalVar.availableIndArr.length; i++) {
-      if (myGlobalVar.availableIndArr[i] !== "taken") {
-        filteredSetters.push(arrOfSetters[myGlobalVar.availableIndArr[i]]);
-      }      
-    } 
-   
-    const getRandomInt = (min, max) => {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    let randomNumber = getRandomInt(0, filteredSetters.length - 1);
-    const nextOBoxSetter = filteredSetters[randomNumber];
-
-    for (let i = 0; i < myGlobalVar.availableIndArr.length; i++) {
-      if (nextOBoxSetter === arrOfSetters[i]) {
-        myGlobalVar.availableIndArr.splice(i, 1, "taken");
-      }
-    }
-
-    if (filteredSetters.length < 1) {
-      endGame = true;      
-    }
-
-    return nextOBoxSetter;
-  }
-
-  const xMove = (n) => {
-
-    const boxSignArr = [box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign];
-
-    const selectedBox = boxSignArr[n - 1];
-    
-    const setBoxSignArr = [setBox1Sign, setBox2Sign, setBox3Sign, setBox4Sign, setBox5Sign, setBox6Sign, setBox7Sign, setBox8Sign, setBox9Sign];
-
-    const markBox = setBoxSignArr[n-1];
-    
-    
-    if (selectedBox === "") {    
-      // myGlobalVar.num = n;
-      setNum2(n);
-      console.log('num2 in xMove is: ', num2);
-      // console.log('num in xMove is: ', myGlobalVar.num);
-      markBox(x);
       setOShouldMove(true);
     }
   }
 
   const reset = () => {
-    myGlobalVar.availableIndArr = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     document.getElementById('boxes').style.pointerEvents = 'auto';
-    // myGlobalVar.num = 0;
-    setNum2(0);
-    endGame = false;
-    message = "";
     setBox1Sign("");
     setBox2Sign("");
     setBox3Sign("");
@@ -98,24 +54,49 @@ const App = () => {
     setBox8Sign("");
     setBox9Sign("");    
     setOShouldMove(false);
+    setSettersObj({
+      1: setBox1Sign,
+      2: setBox2Sign,
+      3: setBox3Sign,
+      4: setBox4Sign,
+      5: setBox5Sign,
+      6: setBox6Sign,
+      7: setBox7Sign,
+      8: setBox8Sign,
+      9: setBox9Sign
+    })
   }
 
   useEffect(() => {
 
-    if (oShouldMove && !endGame) {  
+    if (oShouldMove && !endGame) {
+      const getRandomInt = (min, max) => {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+  
+      let keysArr = Object.keys(settersObj);  
+      let randomNumber = getRandomInt(0, keysArr.length - 1);  
+      let oMoveKey = keysArr[randomNumber];
+      let nextOBoxSetter = settersObj[oMoveKey];
 
-      // console.log('num in useEffect is: ', myGlobalVar.num);
-      console.log('num2 in useEffect is: ', num2);
-
-      // let myFunc = removeBox(myGlobalVar.num);
-      let myFunc = removeBox(num2);
-         
-      const timer = m => new Promise(r => setTimeout(r, m));
-      (async () => {
-        await timer(500)
-        .then(() => myFunc(o));
-      })();
-      setOShouldMove(false);
+      let newObj2 = Object.assign({}, settersObj);
+      delete newObj2[oMoveKey];
+      setSettersObj(newObj2)
+  
+      let keysArr2 = Object.keys(settersObj);  
+      if (keysArr2.length < 1) {
+        endGame = true;      
+      }
+      else {
+        const timer = m => new Promise(r => setTimeout(r, m));
+        (async () => {
+          await timer(500)
+          .then(() => nextOBoxSetter(o));
+        })();
+        setOShouldMove(false);
+      }
     }    
   }, [box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign])
 
@@ -171,7 +152,6 @@ const App = () => {
     endGame = true;    
   }
   
-
   return (
 
     <div className="App">
@@ -229,11 +209,7 @@ const App = () => {
               }        
             </div>        
           
-          </div>
-
-          
-
-         
+          </div>         
 
       </div>
 
