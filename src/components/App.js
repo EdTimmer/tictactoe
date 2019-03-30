@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import x from './images/x.png';
-import o from './images/o.png';
-import logo from './images/logo.png';
-import './App.css';
+import x from '../images/x.png';
+import o from '../images/o.png';
+import logo from '../images/logo.png';
+import '../App.css';
+import Boxes from './Boxes.js';
 
 const App = () => {
   const [box1Sign, setBox1Sign] = useState("");
@@ -29,21 +30,33 @@ const App = () => {
 
   let endGame = false;
   let message = "Game On!";  
+  let signs = {
+    box1Sign: box1Sign,
+    box2Sign: box2Sign,
+    box3Sign: box3Sign,
+    box4Sign: box4Sign,
+    box5Sign: box5Sign,
+    box6Sign: box6Sign,
+    box7Sign: box7Sign,
+    box8Sign: box8Sign,
+    box9Sign: box9Sign
+  }
 
-  const xMove = (n) => {    
-    if (settersObj[n]) {    
-      settersObj[n](x);
-
-      let newObj = Object.assign({}, settersObj);
-      delete newObj[n];
-      setSettersObj(newObj)
-
-      setOShouldMove(true);
-    }
+  const xMove = (n) => {   
+    if (!endGame) {
+      if (settersObj[n]) {    
+        settersObj[n](x);
+  
+        let newObj = Object.assign({}, settersObj);
+        delete newObj[n];
+        setSettersObj(newObj)
+  
+        setOShouldMove(true);
+      }
+    }     
   }
 
   const reset = () => {
-    document.getElementById('boxes').style.pointerEvents = 'auto';
     setBox1Sign("");
     setBox2Sign("");
     setBox3Sign("");
@@ -98,51 +111,44 @@ const App = () => {
         setOShouldMove(false);
       }
     }    
+    
   }, [box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign])
 
   //horizontal win  
   if (box1Sign !== "" && box1Sign === box2Sign && box2Sign === box3Sign) {
     message = box1Sign === x ? "X Wins!" : "O Wins!";
-    document.getElementById('boxes').style.pointerEvents = 'none';
     endGame = true;
   }
   if (box4Sign !== "" && box4Sign === box5Sign && box5Sign === box6Sign) {
     message = box4Sign === x ? "X Wins!" : "O Wins!";
-    document.getElementById('boxes').style.pointerEvents = 'none';
     endGame = true;
   }
   if (box7Sign !== "" && box7Sign === box8Sign && box8Sign === box9Sign) {
     message = box7Sign === x ? "X Wins!" : "O Wins!";;
-    document.getElementById('boxes').style.pointerEvents = 'none';
     endGame = true;
   }
 
   //vertical win
   if (box1Sign !== "" && box1Sign === box4Sign && box4Sign === box7Sign) {
     message = box1Sign === x ? "X Wins!" : "O Wins!";
-    document.getElementById('boxes').style.pointerEvents = 'none';
     endGame = true;
   }
   if (box2Sign !== "" && box2Sign === box5Sign && box5Sign === box8Sign) {
     message = box2Sign === x ? "X Wins!" : "O Wins!";
-    document.getElementById('boxes').style.pointerEvents = 'none';
     endGame = true;
   }
   if (box3Sign !== "" && box3Sign === box6Sign && box6Sign === box9Sign) {
     message = box3Sign === x ? "X Wins!" : "O Wins!";
-    document.getElementById('boxes').style.pointerEvents = 'none';
     endGame = true;
   }
 
   //diagonal win
   if (box1Sign !== "" && box1Sign === box5Sign && box5Sign === box9Sign) {
     message = box1Sign === x ? "X Wins!" : "O Wins!";    
-    document.getElementById('boxes').style.pointerEvents = 'none';
     endGame = true;
   }
   if (box3Sign !== "" && box3Sign === box5Sign && box5Sign === box7Sign) {
     message = box3Sign === x ? "X Wins!" : "O Wins!";    
-    document.getElementById('boxes').style.pointerEvents = 'none';
     endGame = true;
   }
 
@@ -159,57 +165,8 @@ const App = () => {
       <div className="main-left">
 
           <div className="logo"><img className="logo-image" src={logo} alt="logo" /></div>
-
-          <div id="boxes" className="grid-container">
-
-            <div className="grid-item box1" onClick={() => xMove(1)}>        
-              {
-                box1Sign ? <img src={box1Sign} className="image" alt="sign" /> : null
-              }        
-            </div>
-            <div className="grid-item box2" onClick={() => xMove(2)}>
-              {
-                box2Sign ? <img src={box2Sign} className="image" alt="sign" /> : null
-              }        
-            </div>
-            <div className="grid-item box3" onClick={() => xMove(3)}>
-              {
-                box3Sign ? <img src={box3Sign} className="image" alt="sign" /> : null
-              }        
-            </div>
-            <div className="grid-item box4" onClick={() => xMove(4)}>
-              {
-                box4Sign ? <img src={box4Sign} className="image" alt="sign" /> : null
-              }        
-            </div>
-            <div className="grid-item box5" onClick={() => xMove(5)}>
-              {
-                box5Sign ? <img src={box5Sign} className="image" alt="sign" /> : null
-              }        
-            </div>
-            <div className="grid-item box6" onClick={() => xMove(6)}>
-              {
-                box6Sign ? <img src={box6Sign} className="image" alt="sign" /> : null
-              }        
-            </div>
-
-            <div className="grid-item box7" onClick={() => xMove(7)}>
-              {
-                box7Sign ? <img src={box7Sign} className="image" alt="sign" /> : null
-              }        
-            </div>
-            <div className="grid-item box8" onClick={() => xMove(8)}>
-              {
-                box8Sign ? <img src={box8Sign} className="image" alt="sign" /> : null
-              }        
-            </div>
-            <div className="grid-item box9" onClick={() => xMove(9)}>
-              {
-                box9Sign ? <img src={box9Sign} className="image" alt="sign" /> : null
-              }        
-            </div>        
-          
-          </div>         
+        
+          <Boxes signs={signs} xMove={xMove} />
 
       </div>
 
