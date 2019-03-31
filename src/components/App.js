@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import x from '../images/x.png';
-import o from '../images/o.png';
+// import x from '../images/x.png';
+import x from '../images/patrick.png';
+// import o from '../images/o.png';
+import o from '../images/spongebob4.png';
+// import patrick from '../images/patrick.png';
+// import spongebob from '../images/spongebob2.png';
 import logo from '../images/logo.png';
 import '../App.css';
 import Boxes from './Boxes.js';
@@ -29,7 +33,7 @@ const App = () => {
   })
 
   let endGame = false;
-  let message = "Game On!";  
+  let message = "I Am Ready!";  
   let signs = {
     box1Sign: box1Sign,
     box2Sign: box2Sign,
@@ -44,7 +48,8 @@ const App = () => {
 
   const xMove = (n) => {   
     if (!endGame) {
-      if (settersObj[n]) {    
+      if (settersObj[n]) { 
+           
         settersObj[n](x);
   
         let newObj = Object.assign({}, settersObj);
@@ -116,47 +121,48 @@ const App = () => {
 
   //horizontal win  
   if (box1Sign !== "" && box1Sign === box2Sign && box2Sign === box3Sign) {
-    message = box1Sign === x ? "X Wins!" : "O Wins!";
+    message = box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
     endGame = true;
   }
   if (box4Sign !== "" && box4Sign === box5Sign && box5Sign === box6Sign) {
-    message = box4Sign === x ? "X Wins!" : "O Wins!";
+    message = box4Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
     endGame = true;
   }
   if (box7Sign !== "" && box7Sign === box8Sign && box8Sign === box9Sign) {
-    message = box7Sign === x ? "X Wins!" : "O Wins!";;
+    message = box7Sign === x ? "Patrick Wins!" : "Spongebob Wins!";;
     endGame = true;
   }
 
   //vertical win
   if (box1Sign !== "" && box1Sign === box4Sign && box4Sign === box7Sign) {
-    message = box1Sign === x ? "X Wins!" : "O Wins!";
+    message = box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
     endGame = true;
   }
   if (box2Sign !== "" && box2Sign === box5Sign && box5Sign === box8Sign) {
-    message = box2Sign === x ? "X Wins!" : "O Wins!";
+    message = box2Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
     endGame = true;
   }
   if (box3Sign !== "" && box3Sign === box6Sign && box6Sign === box9Sign) {
-    message = box3Sign === x ? "X Wins!" : "O Wins!";
+    message = box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
     endGame = true;
   }
 
   //diagonal win
   if (box1Sign !== "" && box1Sign === box5Sign && box5Sign === box9Sign) {
-    message = box1Sign === x ? "X Wins!" : "O Wins!";    
+    message = box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";    
     endGame = true;
   }
   if (box3Sign !== "" && box3Sign === box5Sign && box5Sign === box7Sign) {
-    message = box3Sign === x ? "X Wins!" : "O Wins!";    
+    message = box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!";    
     endGame = true;
   }
 
   //draw
-  if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "" && message === "Game On!") {
+  if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "" && message === "I Am Ready!") {
     message = "Draw!";
     endGame = true;    
   }
+  console.log("I run!");
   
   return (
 
@@ -164,7 +170,12 @@ const App = () => {
 
       <div className="main-left">
 
-          <div className="logo"><img className="logo-image" src={logo} alt="logo" /></div>
+          {/*<div className="logo"><img className="logo-image" src={logo} alt="logo" /></div>*/}
+          <div className="logo">
+            <img src="https://fontmeme.com/permalink/190331/c4c4ee7256af7dbd791ebccdc22e3ff1.png" alt="logo2"/>
+          </div>
+          
+          
         
           <Boxes signs={signs} xMove={xMove} />
 
@@ -178,7 +189,7 @@ const App = () => {
           <div style={{width: "30rem"}}>
             <div className="message">{message}</div>
           </div>          
-        </div>
+        </div>        
 
         <div className="right-bottom">
           <div className="reset-button" onClick={reset}>RESET</div>
