@@ -13,10 +13,12 @@
   grid-column: 2/3;
   grid-row: 2/3;  
   text-align: center;
-  background-image: url("./images/water1.jpg");
+  /* background-image: url("./images/water1.jpg"); */
+  /* background-image: url("./images/fanart1.jpg"); */
+  background-image: url("./images/sky1.jpg");
   /* background-repeat: repeat; */
   border-radius: 2rem;
-  
+  /* background-size: auto; */
   background-size: cover;
   display: flex;
   /* justify-content: center; */
