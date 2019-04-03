@@ -32,9 +32,9 @@ const App = () => {
     9: setBox9Sign
   })
   const [message, setMessage] = useState("I Am Ready!");
-  const [endGame2, setEndGame2] = useState(false);
+  // const [endGame2, setEndGame2] = useState(false);
 
-  // let refValue = useRef(endGame);
+  // let refValue = useRef(endGame2);
   // console.log(refValue);
 
   let endGame = false;
@@ -53,11 +53,11 @@ const App = () => {
 
   // useEffect(() => {
   //   refValue.current = endGame;
-  // }, [endGame])
+  // }, [endGame2, box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign])
 
   const xMove = (n) => {   
     if (!endGame) {
-      // console.log('x move fired');
+      console.log('x move fired');
       if (settersObj[n]) { 
            
         settersObj[n](x);
@@ -85,7 +85,7 @@ const App = () => {
     setBox9Sign("");    
     setOShouldMove(false);
     setMessage("I Am Ready!");
-    setEndGame2(false);
+    // setEndGame2(false);
     setSettersObj({
       1: setBox1Sign,
       2: setBox2Sign,
@@ -100,13 +100,53 @@ const App = () => {
     endGame = false;
   }
 
+  // useEffect(() => {
+
+  //   if (box1Sign !== "" && box1Sign === box2Sign && box2Sign === box3Sign) {    
+  //     setEndGame2(true);
+  //   }
+  //   if (box4Sign !== "" && box4Sign === box5Sign && box5Sign === box6Sign) {
+  //     setEndGame2(true);
+  //   }
+  //   if (box7Sign !== "" && box7Sign === box8Sign && box8Sign === box9Sign) {
+  //     setEndGame2(true);
+  //   }
+
+  //   //vertical win
+  //   if (box1Sign !== "" && box1Sign === box4Sign && box4Sign === box7Sign) {
+  //     setEndGame2(true);
+  //   }
+  //   if (box2Sign !== "" && box2Sign === box5Sign && box5Sign === box8Sign) {
+  //     setEndGame2(true);
+  //   }
+  //   if (box3Sign !== "" && box3Sign === box6Sign && box6Sign === box9Sign) {
+  //     setEndGame2(true);
+  //   }
+
+  //   //diagonal win
+  //   if (box1Sign !== "" && box1Sign === box5Sign && box5Sign === box9Sign) {
+  //     setEndGame2(true);
+  //   }
+  //   if (box3Sign !== "" && box3Sign === box5Sign && box5Sign === box7Sign) {
+  //     setEndGame2(true);
+  //   }
+
+  //   //draw
+  //   if (!endGame && box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "") {
+  //     setEndGame2(true);
+  //   }
+    
+  // }, [box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign])
+
 
   useEffect(() => {    
 
     checkForWin()
     // console.log('refValue after first checkForWin is: ', refValue.current);
     if (oShouldMove && !endGame) {
-      // console.log('o move fired')
+
+      console.log('o move fired');
+
       const getRandomInt = (min, max) => {
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -207,16 +247,15 @@ const checkForWin = () => {
 
   // console.log("endGame before last if is: ", endGame);
 
-  // useEffect(() => {
-  //   if (message !== "I Am Ready!") {
-  //     setEndGame2(true);
-  //   }
-  // }, [message])
+
+
+
   if (message !== "I Am Ready!") {
     endGame = true;
   }
 
-  // console.log("endGame after last if is: ", endGame);
+
+  // console.log("endGame2 at the end is: ", endGame2);
   
 
   return (
@@ -239,13 +278,13 @@ const checkForWin = () => {
 
         <div className="right-top">
           <div style={{width: "30rem"}}>
-            <div className="message">{message}</div>
-            {/*<div style={{fontSize: "2rem", paddingTop: "1rem"}}>{message2}</div>*/} 
-            </div>         
+            <div className="message">{message}</div>            
+          </div>         
         </div>        
 
         <div className="right-bottom">
           <div className="reset-button" onClick={reset}>RESET</div>
+          <div className="reset-button" onClick={reset}>SCARY</div>
         </div>
 
         </div>      
