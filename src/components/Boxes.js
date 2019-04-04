@@ -5,7 +5,7 @@ const Boxes = ({ signs, xMove }) => {
 
   const {box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign} = signs;   
 
-  console.log('box1Sign is: ', box1Sign);
+  // console.log('endGame2 in Boxes is: ', endGame2);
 
   return (
 

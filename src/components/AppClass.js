@@ -75,7 +75,7 @@ class AppClass extends React.Component {
   }
 
   fireSetter = (n, sign) => {
-    //this function witll (1) fire setter to change sign and (2) delete that setter from the settersObj
+    //this function will (1) fire setter to change sign and (2) delete that setter from the settersObj
     // switch()
   }
 

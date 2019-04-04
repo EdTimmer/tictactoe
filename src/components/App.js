@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-// import x from '../images/x.png';
 import x from '../images/patrick.png';
-// import o from '../images/o.png';
 import o from '../images/spongebob4.png';
-// import patrick from '../images/patrick.png';
-// import spongebob from '../images/spongebob2.png';
-// import logo from '../images/logo.png';
 import '../App.css';
 import Boxes from './Boxes.js';
 
@@ -38,7 +33,7 @@ const App = () => {
   // console.log(refValue);
 
   let endGame = false;
-  // let message = "I Am Ready!";  
+  
   let signs = {
     box1Sign: box1Sign,
     box2Sign: box2Sign,
@@ -52,10 +47,11 @@ const App = () => {
   }
 
   // useEffect(() => {
-  //   refValue.current = endGame;
+  //   refValue.current = endGame2;
   // }, [endGame2, box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign])
 
   const xMove = (n) => {   
+    // console.log('endGame2 before x move', endGame2);
     if (!endGame) {
       console.log('x move fired');
       if (settersObj[n]) { 
@@ -69,6 +65,8 @@ const App = () => {
         setOShouldMove(true);
         
         checkForWin();
+        // console.log('endGame2 after x move and checkForWin', endGame2);
+
       }
     }     
   }
@@ -100,44 +98,71 @@ const App = () => {
     endGame = false;
   }
 
-  // useEffect(() => {
+const checkForWin = () => {
+  // console.log('checkForWin run!');
+    //horizontal win  
+    if (box1Sign !== "" && box1Sign === box2Sign && box2Sign === box3Sign) {      
+      setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
+      endGame = true;
+      // setEndGame2(true);
+    }
+    if (box4Sign !== "" && box4Sign === box5Sign && box5Sign === box6Sign) {
+      // let message = box4Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
+      setMessage(box4Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
+      endGame = true;
+      // setEndGame2(true);
+    }
+    if (box7Sign !== "" && box7Sign === box8Sign && box8Sign === box9Sign) {
+      // let message = box7Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
+      setMessage(box7Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
+      endGame = true;
+      // setEndGame2(true);
+    }
 
-  //   if (box1Sign !== "" && box1Sign === box2Sign && box2Sign === box3Sign) {    
-  //     setEndGame2(true);
-  //   }
-  //   if (box4Sign !== "" && box4Sign === box5Sign && box5Sign === box6Sign) {
-  //     setEndGame2(true);
-  //   }
-  //   if (box7Sign !== "" && box7Sign === box8Sign && box8Sign === box9Sign) {
-  //     setEndGame2(true);
-  //   }
+    //vertical win
+    if (box1Sign !== "" && box1Sign === box4Sign && box4Sign === box7Sign) {
+      // message = box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
+      setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
+      endGame = true;
+      // setEndGame2(true);
+    }
+    if (box2Sign !== "" && box2Sign === box5Sign && box5Sign === box8Sign) {
+      // message = box2Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
+      setMessage(box2Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
+      endGame = true;
+      // setEndGame2(true);
+    }
+    if (box3Sign !== "" && box3Sign === box6Sign && box6Sign === box9Sign) {
+      // message = box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
+      setMessage(box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
+      endGame = true;
+      // setEndGame2(true);
+    }
 
-  //   //vertical win
-  //   if (box1Sign !== "" && box1Sign === box4Sign && box4Sign === box7Sign) {
-  //     setEndGame2(true);
-  //   }
-  //   if (box2Sign !== "" && box2Sign === box5Sign && box5Sign === box8Sign) {
-  //     setEndGame2(true);
-  //   }
-  //   if (box3Sign !== "" && box3Sign === box6Sign && box6Sign === box9Sign) {
-  //     setEndGame2(true);
-  //   }
+    //diagonal win
+    if (box1Sign !== "" && box1Sign === box5Sign && box5Sign === box9Sign) {
+      // message = box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";  
+      setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");  
+      endGame = true;
+      // setEndGame2(true);
+    }
+    if (box3Sign !== "" && box3Sign === box5Sign && box5Sign === box7Sign) {
+      // message = box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!";    
+      setMessage(box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
+      endGame = true;
+      // setEndGame2(true);
+    }
 
-  //   //diagonal win
-  //   if (box1Sign !== "" && box1Sign === box5Sign && box5Sign === box9Sign) {
-  //     setEndGame2(true);
-  //   }
-  //   if (box3Sign !== "" && box3Sign === box5Sign && box5Sign === box7Sign) {
-  //     setEndGame2(true);
-  //   }
-
-  //   //draw
-  //   if (!endGame && box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "") {
-  //     setEndGame2(true);
-  //   }
-    
-  // }, [box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign])
-
+    //draw
+    if (!endGame && box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "") {
+      // message = "Draw!";
+      setMessage("Draw!");
+      endGame = true;
+      // setEndGame2(true);
+    }
+    console.log('endGame after checkForWin is: ', endGame)
+    // console.log('message after checkForWin is: ', message)
+  } 
 
   useEffect(() => {    
 
@@ -164,7 +189,7 @@ const App = () => {
   
       let keysArr2 = Object.keys(settersObj);  
       if (keysArr2.length < 1) {
-        // setEndGame(true);
+        // setEndGame2(true);
         endGame = true;      
       }
       else {
@@ -180,84 +205,19 @@ const App = () => {
     
   }, [box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign])
 
-const checkForWin = () => {
-  // console.log('checkForWin run!');
-    //horizontal win  
-    if (box1Sign !== "" && box1Sign === box2Sign && box2Sign === box3Sign) {
-      
-      setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
-      // setEndGame(true);
-    }
-    if (box4Sign !== "" && box4Sign === box5Sign && box5Sign === box6Sign) {
-      // let message = box4Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      setMessage(box4Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
-      // setEndGame(true);
-    }
-    if (box7Sign !== "" && box7Sign === box8Sign && box8Sign === box9Sign) {
-      // let message = box7Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      setMessage(box7Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
-      // setEndGame(true);
-    }
-
-    //vertical win
-    if (box1Sign !== "" && box1Sign === box4Sign && box4Sign === box7Sign) {
-      // message = box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
-      // setEndGame(true);
-    }
-    if (box2Sign !== "" && box2Sign === box5Sign && box5Sign === box8Sign) {
-      // message = box2Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      setMessage(box2Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
-      // setEndGame(true);
-    }
-    if (box3Sign !== "" && box3Sign === box6Sign && box6Sign === box9Sign) {
-      // message = box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      setMessage(box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
-      // setEndGame(true);
-    }
-
-    //diagonal win
-    if (box1Sign !== "" && box1Sign === box5Sign && box5Sign === box9Sign) {
-      // message = box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";  
-      setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");  
-      endGame = true;
-      // setEndGame(true);
-    }
-    if (box3Sign !== "" && box3Sign === box5Sign && box5Sign === box7Sign) {
-      // message = box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!";    
-      setMessage(box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
-      // setEndGame(true);
-    }
-
-    //draw
-    if (!endGame && box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "") {
-      // message = "Draw!";
-      setMessage("Draw!");
-      endGame = true;
-      // setEndGame(true);
-    }
-  } 
+  // useEffect(() => {
+  //   if (message !== "I Am Ready!") {
+  //     setEndGame2(true);
+  //   }
+  // }, [message])
 
   // console.log("endGame before last if is: ", endGame);
 
-
-
-
   if (message !== "I Am Ready!") {
+    console.log('the last if statement run')
     endGame = true;
   }
-
-
   // console.log("endGame2 at the end is: ", endGame2);
-  
-
   return (
 
     <div className="App">
@@ -290,7 +250,6 @@ const checkForWin = () => {
         </div>      
 
       </div>
-
 
     </div>
   );
