@@ -3,6 +3,7 @@ import x from '../images/patrick.png';
 import o from '../images/spongebob4.png';
 import '../App.css';
 import Boxes from './Boxes.js';
+import ImageModal from './ImageModal';
 
 const App = () => {
   const [box1Sign, setBox1Sign] = useState("");
@@ -15,6 +16,8 @@ const App = () => {
   const [box8Sign, setBox8Sign] = useState("");
   const [box9Sign, setBox9Sign] = useState("");
   const [oShouldMove, setOShouldMove] = useState(false);
+  const [modalOpacity, setModalOpacity] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
   const [settersObj, setSettersObj] = useState({
     1: setBox1Sign,
     2: setBox2Sign,
@@ -32,7 +35,7 @@ const App = () => {
   // let refValue = useRef(endGame2);
   // console.log(refValue);
 
-  let endGame = false;
+  // let endGame = false;
   
   let signs = {
     box1Sign: box1Sign,
@@ -52,7 +55,7 @@ const App = () => {
 
   const xMove = (n) => {   
     // console.log('endGame2 before x move', endGame2);
-    if (!endGame) {
+    if (!checkForWin()) {
       console.log('x move fired');
       if (settersObj[n]) { 
            
@@ -84,6 +87,8 @@ const App = () => {
     setOShouldMove(false);
     setMessage("I Am Ready!");
     // setEndGame2(false);
+    setModalOpacity(0);
+    setModalOpen(false);
     setSettersObj({
       1: setBox1Sign,
       2: setBox2Sign,
@@ -95,7 +100,7 @@ const App = () => {
       8: setBox8Sign,
       9: setBox9Sign
     })
-    endGame = false;
+    // endGame = false;
   }
 
 const checkForWin = () => {
@@ -103,72 +108,112 @@ const checkForWin = () => {
     //horizontal win  
     if (box1Sign !== "" && box1Sign === box2Sign && box2Sign === box3Sign) {      
       setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
+      // endGame = true;
       // setEndGame2(true);
+      return true;
     }
     if (box4Sign !== "" && box4Sign === box5Sign && box5Sign === box6Sign) {
       // let message = box4Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
       setMessage(box4Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
+      // endGame = true;
       // setEndGame2(true);
+      return true;
     }
     if (box7Sign !== "" && box7Sign === box8Sign && box8Sign === box9Sign) {
       // let message = box7Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
       setMessage(box7Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
+      // endGame = true;
       // setEndGame2(true);
+      return true;
     }
 
     //vertical win
     if (box1Sign !== "" && box1Sign === box4Sign && box4Sign === box7Sign) {
       // message = box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
       setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
+      // endGame = true;
       // setEndGame2(true);
+      return true;
     }
     if (box2Sign !== "" && box2Sign === box5Sign && box5Sign === box8Sign) {
       // message = box2Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
       setMessage(box2Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
+      // endGame = true;
       // setEndGame2(true);
+      return true;
     }
     if (box3Sign !== "" && box3Sign === box6Sign && box6Sign === box9Sign) {
       // message = box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
       setMessage(box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
+      // endGame = true;
       // setEndGame2(true);
+      return true;
     }
 
     //diagonal win
     if (box1Sign !== "" && box1Sign === box5Sign && box5Sign === box9Sign) {
       // message = box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";  
       setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");  
-      endGame = true;
+      // endGame = true;
       // setEndGame2(true);
+      return true;
     }
     if (box3Sign !== "" && box3Sign === box5Sign && box5Sign === box7Sign) {
       // message = box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!";    
       setMessage(box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      endGame = true;
+      // endGame = true;
       // setEndGame2(true);
+      return true;
     }
 
     //draw
-    if (!endGame && box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "") {
+    if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "") {
       // message = "Draw!";
       setMessage("Draw!");
-      endGame = true;
+      // endGame = true;
       // setEndGame2(true);
+      return true;
     }
-    console.log('endGame after checkForWin is: ', endGame)
+    else {
+      return false;
+    }
+    // console.log('endGame after checkForWin is: ', endGame)
     // console.log('message after checkForWin is: ', message)
   } 
+
+  const scary = () => {
+    // console.log('scary run')
+    handleOpen();
+
+    const timer = m => new Promise(r => setTimeout(r, m));
+
+    (async () => {
+      setModalOpacity(0);
+      await timer(500)
+      .then(() => setModalOpacity(1));
+
+      await timer(2000)
+        .then(() => setModalOpacity(0));
+
+      await timer(500)
+        .then(() => handleClose());
+    })();
+  }
+
+  const handleOpen = () => {
+    setModalOpen(true);
+    setModalOpacity(1);
+  }
+
+  const handleClose = () => {
+    setModalOpen(false);
+  }
 
   useEffect(() => {    
 
     checkForWin()
     // console.log('refValue after first checkForWin is: ', refValue.current);
-    if (oShouldMove && !endGame) {
+    if (oShouldMove && !checkForWin()) {
 
       console.log('o move fired');
 
@@ -190,7 +235,8 @@ const checkForWin = () => {
       let keysArr2 = Object.keys(settersObj);  
       if (keysArr2.length < 1) {
         // setEndGame2(true);
-        endGame = true;      
+        // endGame = true;      
+        console.log('filled all spots')
       }
       else {
         const timer = m => new Promise(r => setTimeout(r, m));
@@ -215,7 +261,7 @@ const checkForWin = () => {
 
   if (message !== "I Am Ready!") {
     console.log('the last if statement run')
-    endGame = true;
+    // endGame = true;
   }
   // console.log("endGame2 at the end is: ", endGame2);
   return (
@@ -244,9 +290,9 @@ const checkForWin = () => {
 
         <div className="right-bottom">
           <div className="reset-button" onClick={reset}>RESET</div>
-          <div className="reset-button" onClick={reset}>SCARY</div>
+          <div className="reset-button" onClick={scary}>SCARY</div>
         </div>
-
+        <ImageModal modalOpen={modalOpen} handleOpen={handleOpen} handleClose={handleClose} modalOpacity={modalOpacity} />
         </div>      
 
       </div>
