@@ -9,11 +9,11 @@ const styles = theme => ({
     // position: 'absolute',
     marginLeft: "auto",
     marginRight: "auto",
-    marginTop: "10rem",
+    marginTop: "5rem",
     marginBottom: "auto",
     // width: theme.spacing.unit * 63,
-    width: "40rem",
-    height: "40rem",
+    width: "60rem",
+    // height: "40rem",
     // backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     // padding: theme.spacing.unit * 4,
@@ -38,7 +38,7 @@ const Image = ({modalOpen, handleClose, modalOpacity, classes, imageNumber}) => 
         
           <div style={{opacity: modalOpacity}} className={classes.paper}>
           
-            <img src={img1} style={{ height: '35rem', width: '35rem' }} alt="scary" />
+            <img src={img1} style={{ width: '55rem' }} alt="scary" />
   
           </div>      
         

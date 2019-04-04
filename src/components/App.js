@@ -246,7 +246,7 @@ const checkForWin = () => {
         })();
         setOShouldMove(false);
       }
-      checkForWin();
+      // checkForWin();
     }    
     
   }, [box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign])
