@@ -67,6 +67,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 .grid-container {
@@ -177,16 +178,19 @@
   width: 35rem;
 }
 
-.reset-button {
+.button {
   width: 10rem;
   height: 4rem;
   font-size: 1.5rem;
   font-weight: bold;
   border-radius: 2rem;
-  color: purple;
+  /* color: purple; */
+  color: #0457a0;
   background-color: white;
+  border: 0.5rem solid #aead0d; 
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto
+  margin: 2rem auto;
+  /* padding: 3rem; */
 }

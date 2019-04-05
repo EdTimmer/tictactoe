@@ -9,7 +9,7 @@ const styles = theme => ({
     // position: 'absolute',
     marginLeft: "auto",
     marginRight: "auto",
-    marginTop: "5rem",
+    marginTop: "2rem",
     marginBottom: "auto",
     // width: theme.spacing.unit * 63,
     width: "60rem",
@@ -21,7 +21,7 @@ const styles = theme => ({
     display: "flex",    
     justifyContent: "center",
     alignItems: "center",
-    transition: 'opacity 0.5s ease-in-out'
+    transition: 'opacity 1s ease-in-out'
   },
 });
 
@@ -36,10 +36,8 @@ const Image = ({modalOpen, handleClose, modalOpacity, classes, imageNumber}) => 
         style={{transition: 'all 0.5s ease-in-out', opacity: modalOpacity}}
       >
         
-          <div style={{opacity: modalOpacity}} className={classes.paper}>
-          
-            <img src={img1} style={{ width: '55rem' }} alt="scary" />
-  
+          <div style={{opacity: modalOpacity}} className={classes.paper}>          
+            <img src={img1} style={{ width: '55rem' }} alt="scary" />  
           </div>      
         
       </Modal>

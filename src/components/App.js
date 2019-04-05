@@ -195,7 +195,7 @@ const checkForWin = () => {
       await timer(2000)
         .then(() => setModalOpacity(0));
 
-      await timer(500)
+      await timer(1000)
         .then(() => handleClose());
     })();
   }
@@ -259,10 +259,10 @@ const checkForWin = () => {
 
   // console.log("endGame before last if is: ", endGame);
 
-  if (message !== "I Am Ready!") {
-    console.log('the last if statement run')
-    // endGame = true;
-  }
+  // if (message !== "I Am Ready!") {
+  //   console.log('the last if statement run')
+  //   // endGame = true;
+  // }
   // console.log("endGame2 at the end is: ", endGame2);
   return (
 
@@ -289,8 +289,10 @@ const checkForWin = () => {
         </div>        
 
         <div className="right-bottom">
-          <div className="reset-button" onClick={reset}>RESET</div>
-          <div className="reset-button" onClick={scary}>SCARY</div>
+          <div className="button" onClick={scary}>EASY</div>
+          <div className="button" onClick={scary}>HARD</div>          
+          <div className="button" onClick={scary}>SCARY</div>
+          <div className="button" onClick={reset}>RESET</div>
         </div>
         <ImageModal modalOpen={modalOpen} handleOpen={handleOpen} handleClose={handleClose} modalOpacity={modalOpacity} />
         </div>      
