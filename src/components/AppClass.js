@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 // import x from '../images/x.png';
 import x from '../images/patrick.png';
 // import o from '../images/o.png';
@@ -25,7 +25,7 @@ class AppClass extends React.Component {
       box9Sign: "",
       oShouldMove: "",
       message: "I Am Ready!",
-      endGame: false,
+      gameOver: false,
       // settesObj: {
       //   1: (sign) => this.setState({box1Sign: sign}),
       //   2: (sign) => this.setState({box2Sign: sign}),
@@ -61,17 +61,19 @@ class AppClass extends React.Component {
       9: (sign) => this.setState({box9Sign: sign}),
     }
 
-    this.signs = {
-      box1Sign: this.state.box1Sign,
-      box2Sign: this.state.box2Sign,
-      box3Sign: this.state.box3Sign,
-      box4Sign: this.state.box4Sign,
-      box5Sign: this.state.box5Sign,
-      box6Sign: this.state.box6Sign,
-      box7Sign: this.state.box7Sign,
-      box8Sign: this.state.box8Sign,
-      box9Sign: this.state.box9Sign
-    }
+    this.endGame2 = false;
+
+    // this.signs = {
+    //   box1Sign: this.state.box1Sign,
+    //   box2Sign: this.state.box2Sign,
+    //   box3Sign: this.state.box3Sign,
+    //   box4Sign: this.state.box4Sign,
+    //   box5Sign: this.state.box5Sign,
+    //   box6Sign: this.state.box6Sign,
+    //   box7Sign: this.state.box7Sign,
+    //   box8Sign: this.state.box8Sign,
+    //   box9Sign: this.state.box9Sign
+    // }
   }
 
   fireSetter = (n, sign) => {
@@ -80,16 +82,22 @@ class AppClass extends React.Component {
   }
 
   xMove = (n) => {   
-    if (!this.state.endGame) {
+    if (!this.state.gameOver) {
       console.log('x move fired');
-      console.log('settersObj: ', this.settersObj)
+      // console.log('settersObj: ', this.settersObj)
       if (this.settersObj[n]) { 
 
-        console.log('setter is: ', this.settersObj[n])
+        // console.log('setter is: ', this.settersObj[n])
            
-        // this.settersObj[n](x);
-        this.setState({box1Sign: x});
-        console.log('changed sign is: ', this.state.box1Sign)
+        this.settersObj[n](x);
+        // console.log('message before setters is called is: ', this.state.message)
+        // this.setState({box1Sign: "test"});
+        // this.setState({message: "hello!"})
+        // console.log('message sfter setter is called is: ', this.state.message)
+
+
+        // console.log('changed sign is: ', this.state.box1Sign)
+        
   
         // let newObj = Object.assign({}, this.settersObj);
         // delete newObj[n];
@@ -97,16 +105,23 @@ class AppClass extends React.Component {
         
         delete this.settersObj[n];
   
-        this.setState({oShouldMove: true});
+        this.setState({oShouldMove: true})
+        // .then(()=> this.oMove())
         // return checkForWin();
         this.checkForWin();
+        // console.log('gameOver after x move is: ', this.state.gameOver)
         this.oMove();
       }
     }     
   }
 
+  // this.setState((prevState, props) =>({
+  //   counter: prevState.counter + props.increment
+  // ))}
+
   oMove = () => {
-    if (this.state.oShouldMove && !this.state.endGame) {
+    this.checkForWin()
+    if (!this.state.gameOver) {
       console.log('o move fired')
       const getRandomInt = (min, max) => {
         min = Math.ceil(min);
@@ -126,7 +141,7 @@ class AppClass extends React.Component {
   
       let keysArr2 = Object.keys(this.settersObj);  
       if (keysArr2.length < 1) {
-        this.setState({endGame: true});
+        this.setState({gameOver: true});
 
       }
       else {
@@ -146,46 +161,50 @@ checkForWin = () => {
   console.log('checkForWin run!');
     //horizontal win  
     if (this.state.box1Sign !== "" && this.state.box1Sign === this.state.box2Sign && this.state.box2Sign === this.state.box3Sign) {
+      console.log("hi")
       let newMessage = this.state.box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      this.setState({setMessage: newMessage, endGame: true});
+      this.setState({setMessage: newMessage, gameOver: true});
+      console.log('this.state.gameOver in checkForWin after top row win: ', this.state.gameOver)
+      this.endGame2 = true;
+      console.log('endGame2 after top row win is: ', this.endGame2)
     }
     if (this.state.box4Sign !== "" && this.state.box4Sign === this.state.box5Sign && this.state.box5Sign === this.state.box6Sign) {
       let newMessage = this.state.box4Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      this.setState({setMessage: newMessage, endGame: true});
+      this.setState({setMessage: newMessage, gameOver: true});
     }
     if (this.state.box7Sign !== "" && this.state.box7Sign === this.state.box8Sign && this.state.box8Sign === this.state.box9Sign) {
       let newMessage = this.state.box7Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      this.setState({setMessage: newMessage, endGame: true});
+      this.setState({setMessage: newMessage, gameOver: true});
     }
 
     //vertical win
     if (this.state.box1Sign !== "" && this.state.box1Sign === this.state.box4Sign && this.state.box4Sign === this.state.box7Sign) {
       let newMessage = this.state.box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      this.setState({setMessage: newMessage, endGame: true});
+      this.setState({setMessage: newMessage, gameOver: true});
     }
     if (this.state.box2Sign !== "" && this.state.box2Sign === this.state.box5Sign && this.state.box5Sign === this.state.box8Sign) {
       let newMessage = this.state.box2Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      this.setState({setMessage: newMessage, endGame: true});
+      this.setState({setMessage: newMessage, gameOver: true});
     }
     if (this.state.box3Sign !== "" && this.state.box3Sign === this.state.box6Sign && this.state.box6Sign === this.state.box9Sign) {
       let newMessage = this.state.box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      this.setState({setMessage: newMessage, endGame: true});
+      this.setState({setMessage: newMessage, gameOver: true});
     }
 
     //diagonal win
     if (this.state.box1Sign !== "" && this.state.box1Sign === this.state.box5Sign && this.state.box5Sign === this.state.box9Sign) {
       let newMessage = this.state.box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";  
-      this.setState({setMessage: newMessage, endGame: true});
+      this.setState({setMessage: newMessage, gameOver: true});
     }
     if (this.state.box3Sign !== "" && this.state.box3Sign === this.state.box5Sign && this.state.box5Sign === this.state.box7Sign) {
       let newMessage = this.state.box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!";    
-      this.setState({setMessage: newMessage, endGame: true});
+      this.setState({setMessage: newMessage, gameOver: true});
     }
 
     //draw
-    if (!this.state.endGame && this.state.box1Sign !== "" && this.state.box2Sign !== "" && this.state.box3Sign !== "" && this.state.box4Sign !== "" && this.state.box5Sign !== "" && this.state.box6Sign !== "" && this.state.box7Sign !== "" && this.state.box8Sign !== "" && this.state.box9Sign !== "") {
+    if (!this.state.gameOver && this.state.box1Sign !== "" && this.state.box2Sign !== "" && this.state.box3Sign !== "" && this.state.box4Sign !== "" && this.state.box5Sign !== "" && this.state.box6Sign !== "" && this.state.box7Sign !== "" && this.state.box8Sign !== "" && this.state.box9Sign !== "") {
       let newMessage = "Draw!";
-      this.setState({setMessage: newMessage, endGame: true});
+      this.setState({setMessage: newMessage, gameOver: true});
     }
   } 
 
@@ -202,7 +221,7 @@ checkForWin = () => {
       box9Sign: "",
       oShouldMove: "",
       message: "I Am Ready!",
-      endGame: false   
+      gameOver: false   
     });
     this.settesObj = {
       1: (sign) => this.setState({box1Sign: sign}),
@@ -218,9 +237,11 @@ checkForWin = () => {
 }
 
   render() {
+    console.log('gameOver in render is: ', this.state.gameOver)
+    console.log('endGame2 in render is: ', this.endGame2)
 
-    const { message } = this.state;
-    const { reset, xMove, signs } = this;
+    const { message, box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign} = this.state;
+    const { reset, xMove } = this;
 
     return (
 
@@ -235,7 +256,7 @@ checkForWin = () => {
             
             
           
-            <Boxes signs={signs} xMove={xMove} />
+            <Boxes xMove={xMove} box1Sign={box1Sign} box2Sign ={box2Sign} box3Sign={box3Sign} box4Sign={box4Sign} box5Sign={box5Sign} box6Sign={box6Sign} box7Sign={box7Sign} box8Sign={box8Sign} box9Sign={box9Sign} />
 
         </div>
 
@@ -251,7 +272,7 @@ checkForWin = () => {
           </div>        
 
           <div className="right-bottom">
-            <div className="reset-button" onClick={reset}>RESET</div>
+            <div className="button" onClick={reset}>RESET</div>
           </div>
 
           </div>      

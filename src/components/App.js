@@ -30,6 +30,7 @@ const App = () => {
     9: setBox9Sign
   })
   const [message, setMessage] = useState("I Am Ready!");
+  const [gameOver, setGameOver] = useState(false);
   // const [endGame2, setEndGame2] = useState(false);
 
   // let refValue = useRef(endGame2);
@@ -87,6 +88,7 @@ const App = () => {
     setOShouldMove(false);
     setMessage("I Am Ready!");
     // setEndGame2(false);
+    setGameOver(false);
     setModalOpacity(0);
     setModalOpen(false);
     setSettersObj({
@@ -110,6 +112,7 @@ const checkForWin = () => {
       setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
       // endGame = true;
       // setEndGame2(true);
+      setGameOver(true);
       return true;
     }
     if (box4Sign !== "" && box4Sign === box5Sign && box5Sign === box6Sign) {
@@ -117,6 +120,7 @@ const checkForWin = () => {
       setMessage(box4Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
       // endGame = true;
       // setEndGame2(true);
+      setGameOver(true);
       return true;
     }
     if (box7Sign !== "" && box7Sign === box8Sign && box8Sign === box9Sign) {
@@ -124,6 +128,7 @@ const checkForWin = () => {
       setMessage(box7Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
       // endGame = true;
       // setEndGame2(true);
+      setGameOver(true);
       return true;
     }
 
@@ -133,6 +138,7 @@ const checkForWin = () => {
       setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
       // endGame = true;
       // setEndGame2(true);
+      setGameOver(true);
       return true;
     }
     if (box2Sign !== "" && box2Sign === box5Sign && box5Sign === box8Sign) {
@@ -140,6 +146,7 @@ const checkForWin = () => {
       setMessage(box2Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
       // endGame = true;
       // setEndGame2(true);
+      setGameOver(true);
       return true;
     }
     if (box3Sign !== "" && box3Sign === box6Sign && box6Sign === box9Sign) {
@@ -147,6 +154,7 @@ const checkForWin = () => {
       setMessage(box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
       // endGame = true;
       // setEndGame2(true);
+      setGameOver(true);
       return true;
     }
 
@@ -156,6 +164,7 @@ const checkForWin = () => {
       setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");  
       // endGame = true;
       // setEndGame2(true);
+      setGameOver(true);
       return true;
     }
     if (box3Sign !== "" && box3Sign === box5Sign && box5Sign === box7Sign) {
@@ -163,6 +172,7 @@ const checkForWin = () => {
       setMessage(box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
       // endGame = true;
       // setEndGame2(true);
+      setGameOver(true);
       return true;
     }
 
@@ -172,6 +182,7 @@ const checkForWin = () => {
       setMessage("Draw!");
       // endGame = true;
       // setEndGame2(true);
+      setGameOver(true);
       return true;
     }
     else {
@@ -208,6 +219,11 @@ const checkForWin = () => {
   const handleClose = () => {
     setModalOpen(false);
   }
+
+  // useEffect(() => {
+  //   console.log('first useEffect run')
+  //   checkForWin();
+  // }, [gameOver])
 
   useEffect(() => {    
 
@@ -250,6 +266,11 @@ const checkForWin = () => {
     }    
     
   }, [box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign])
+
+  // useEffect(() => {
+  //   console.log('third useEffect run')
+  // }, [])
+  console.log('gameOver at the end of the function is: ', gameOver);
 
   // useEffect(() => {
   //   if (message !== "I Am Ready!") {
