@@ -16,9 +16,10 @@ const Unbeatable = () => {
   const [box6, setBox6] = useState("");
   const [box7, setBox7] = useState("");
   const [box8, setBox8] = useState("");
+  const [finishGame, setFinishGame] = useState(false)
   
-  const huPlayer = 'O';
-  const aiPlayer = 'X';
+  const huPlayer = 'X';
+  const aiPlayer = 'O';
   const winCombos = [
     [0, 1, 2],
     [3, 4, 5],
@@ -40,65 +41,149 @@ const Unbeatable = () => {
     7: setBox7,
     8: setBox8,
   };
-
-
-  let xMove = (num) => {
-    console.log(num);
-  }
+  let endGame = false;
 
   const turnClick = (square) => {
-    if (typeof origBoard[square] == 'number') {
+    console.log('endGame in turnClick is: ', endGame);
+    if (!finishGame && typeof origBoard[square] == 'number') {
       turn(square, huPlayer)
       if (!checkWin(origBoard, huPlayer) && !checkTie()) {
         turn(bestSpot(), aiPlayer);
       } 
     }
-  }
-
-  
-  function turn(square, player) {
-    origBoard[square] = player;
-    settersObj[square](player);
     
+  }
+  
+  const turn = (square, player) => {
+    origBoard[square] = player;
+    settersObj[square](player);    
     let gameWon = checkWin(origBoard, player)
     if (gameWon) gameOver(gameWon)
+  }
+
+  const checkWin = (board, player) => {
+    let plays = board.reduce((a, e, i) =>
+      (e === player) ? a.concat(i) : a, []);
+    let gameWon = null;
+    for (let [index, win] of winCombos.entries()) {
+      if (win.every(elem => plays.indexOf(elem) > -1)) {
+        gameWon = {index: index, player: player};
+        break;
+      }
+    }
+    // endGame = true;
+    return gameWon;
+  }
+  
+  const gameOver = (gameWon) => {
+    setFinishGame(true);
+    console.log('gameWon is: ', gameWon);
+    console.log('endGame is: ', endGame);    
+    
+  }
+
+  const emptySquares = () => {
+    return origBoard.filter(s => typeof s == 'number');
+  }
+  
+  const bestSpot = () => {
+    return minimax(origBoard, aiPlayer).index;
+  }
+  
+  function checkTie() {
+    if (emptySquares().length === 0) {
+      // declareWinner("Tie Game!")
+      return true;
+    }
+    return false;
+  }
+
+  function minimax(newBoard, player) {
+    var availSpots = emptySquares();
+  
+    if (checkWin(newBoard, huPlayer)) {
+      return {score: -10};
+    } else if (checkWin(newBoard, aiPlayer)) {
+      return {score: 10};
+    } else if (availSpots.length === 0) {
+      return {score: 0};
+    }
+    var moves = [];
+    for (var i = 0; i < availSpots.length; i++) {
+      var move = {};
+      move.index = newBoard[availSpots[i]];
+      newBoard[availSpots[i]] = player;
+  
+      if (player === aiPlayer) {
+        var result = minimax(newBoard, huPlayer);
+        move.score = result.score;
+      } else {
+        var result = minimax(newBoard, aiPlayer);
+        move.score = result.score;
+      }
+  
+      newBoard[availSpots[i]] = move.index;
+  
+      moves.push(move);
+    }
+  
+    var bestMove;
+    if(player === aiPlayer) {
+      var bestScore = -10000;
+      for(var i = 0; i < moves.length; i++) {
+        if (moves[i].score > bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    } else {
+      var bestScore = 10000;
+      for(var i = 0; i < moves.length; i++) {
+        if (moves[i].score < bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    }
+  
+    return moves[bestMove];
   }
   
   return (
     <div className="grid-container">
 
-      <div className="grid-item box1" onClick={() => xMove(0)}>        
+      <div className="grid-item box1" onClick={() => turnClick(0)}>        
         {box0}
       </div>
 
-      <div className="grid-item box2" onClick={() => xMove(1)}>        
+      <div className="grid-item box2" onClick={() => turnClick(1)}>        
         {box1}  
       </div>
 
-      <div className="grid-item box3" onClick={() => xMove(2)}>
+      <div className="grid-item box3" onClick={() => turnClick(2)}>
         {box2}     
       </div>
 
-      <div className="grid-item box4" onClick={() => xMove(3)}>
+      <div className="grid-item box4" onClick={() => turnClick(3)}>
         {box3}
       </div>
 
-      <div className="grid-item box5" onClick={() => xMove(4)}>
+      <div className="grid-item box5" onClick={() => turnClick(4)}>
         {box4}  
       </div>
 
-      <div className="grid-item box6" onClick={() => xMove(5)}>
+      <div className="grid-item box6" onClick={() => turnClick(5)}>
         {box5}  
       </div>
 
-      <div className="grid-item box7" onClick={() => xMove(6)}>
+      <div className="grid-item box7" onClick={() => turnClick(6)}>
         {box6}
       </div>
 
-      <div className="grid-item box8" onClick={() => xMove(7)}>
+      <div className="grid-item box8" onClick={() => turnClick(7)}>
         {box7}
       </div>
-      <div className="grid-item box9" onClick={() => xMove(8)}>
+      <div className="grid-item box9" onClick={() => turnClick(8)}>
         {box8}
       </div>
    
