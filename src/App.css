@@ -86,6 +86,7 @@
   align-items: center;
   /* background-color: lightgoldenrodyellow; */
   background: transparent;
+  cursor: pointer;
 }
 
 /* Blue color: #0457a0 */
@@ -192,5 +193,6 @@
   justify-content: center;
   align-items: center;
   margin: 2rem auto;
+  cursor: pointer;
   /* padding: 3rem; */
 }

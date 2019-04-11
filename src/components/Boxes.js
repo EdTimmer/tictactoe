@@ -1,9 +1,9 @@
 import React from 'react';
 import '../App.css';
 
-const Boxes = ({ xMove, box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign }) => {
+const Boxes = ({ xMove, signs }) => {
 
-  // const {box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign} = signs;   
+  const {box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign} = signs;   
 
   // console.log('endGame2 in Boxes is: ', endGame2);
 
