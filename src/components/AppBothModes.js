@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import x from '../images/patrick.png';
 import o from '../images/spongebob4.png';
 import '../App.css';
-// import Boxes from './Boxes.js';
-// import ImageModal from './ImageModal';
+import Boxes2 from './Boxes2.js';
+import ImageModal from './ImageModal';
 
-const Unbeatable = () => {
+const AppBothModes = () => {
   const [origBoard, setOrigBoard] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8]);
   const [box0, setBox0] = useState("");
   const [box1, setBox1] = useState("");
@@ -18,9 +18,12 @@ const Unbeatable = () => {
   const [box8, setBox8] = useState("");
   const [finishGame, setFinishGame] = useState(false);
   const [easyMode, setEasyMode] = useState(true);
+  const [modalOpacity, setModalOpacity] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [message, setMessage] = useState("I Am Ready!");
   
-  const huPlayer = 'X';
-  const aiPlayer = 'O';
+  const huPlayer = x;
+  const aiPlayer = o;
   const winCombos = [
     [0, 1, 2],
     [3, 4, 5],
@@ -42,7 +45,36 @@ const Unbeatable = () => {
     7: setBox7,
     8: setBox8,
   };
-  let endGame = false;
+  
+  let signs = {
+    box0: box0,
+    box1: box1,
+    box2: box2,
+    box3: box3,
+    box4: box4,
+    box5: box5,
+    box6: box6,
+    box7: box7,
+    box8: box8,
+  }
+
+  const reset = () => {
+    setBox0("");
+    setBox1("");
+    setBox2("");
+    setBox3("");
+    setBox4("");
+    setBox5("");
+    setBox6("");
+    setBox7("");
+    setBox8("");
+    setMessage("I Am Ready!");
+    setModalOpacity(0);
+    setModalOpen(false);
+    setOrigBoard([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+    setFinishGame(false);
+    setEasyMode(true);
+  }
 
   const turnClick = (square) => {
     // console.log('endGame in turnClick is: ', endGame);
@@ -97,8 +129,8 @@ const Unbeatable = () => {
   
   const gameOver = (gameWon) => {
     setFinishGame(true);
-    console.log('gameWon is: ', gameWon);
-    console.log('endGame is: ', endGame);    
+    // console.log('gameWon is: ', gameWon);
+    // console.log('endGame is: ', endGame);    
     
   }
 
@@ -176,53 +208,77 @@ const Unbeatable = () => {
 
   const makeHard = () => {
     setEasyMode(false);
+  }  
+
+
+  const scary = () => {
+    // console.log('scary run')
+    handleOpen();
+
+    const timer = m => new Promise(r => setTimeout(r, m));
+
+    (async () => {
+      setModalOpacity(0);
+      await timer(500)
+      .then(() => setModalOpacity(1));
+
+      await timer(2000)
+        .then(() => setModalOpacity(0));
+
+      await timer(1000)
+        .then(() => handleClose());
+    })();
   }
-  
+
+  const handleOpen = () => {
+    setModalOpen(true);
+    setModalOpacity(1);
+  }
+
+  const handleClose = () => {
+    setModalOpen(false);
+  }
+
+
+
   return (
-    <div className="grid-container">
 
-      <div className="grid-item box1" onClick={() => turnClick(0)}>        
-        {box0}
-      </div>
+    <div className="App">
 
-      <div className="grid-item box2" onClick={() => turnClick(1)}>        
-        {box1}  
-      </div>
+      <div className="main-left">
 
-      <div className="grid-item box3" onClick={() => turnClick(2)}>
-        {box2}     
-      </div>
+          <div className="logo">
+            <img src="https://fontmeme.com/permalink/190331/c4c4ee7256af7dbd791ebccdc22e3ff1.png" alt="logo2"/>
+          </div>         
+        
+          <Boxes2 signs={signs} turnClick={turnClick} />
 
-      <div className="grid-item box4" onClick={() => turnClick(3)}>
-        {box3}
       </div>
 
-      <div className="grid-item box5" onClick={() => turnClick(4)}>
-        {box4}  
+      <div className="main-right">
+
+        <div className="right-grid-container">
+
+        <div className="right-top">
+          <div style={{width: "30rem"}}>
+            <div className="message">{message}</div>            
+          </div>         
+        </div>        
+
+        <div className="right-bottom">
+          <div className="button" onClick={makeEasy}>EASY</div>
+          <div className="button" onClick={makeHard}>HARD</div>          
+          <div className="button" onClick={scary}>SCARY</div>
+          <div className="button" onClick={reset}>RESET</div>
+        </div>
+        <ImageModal modalOpen={modalOpen} handleOpen={handleOpen} handleClose={handleClose} modalOpacity={modalOpacity} />
+        </div>      
+
       </div>
 
-      <div className="grid-item box6" onClick={() => turnClick(5)}>
-        {box5}  
-      </div>
-
-      <div className="grid-item box7" onClick={() => turnClick(6)}>
-        {box6}
-      </div>
-
-      <div className="grid-item box8" onClick={() => turnClick(7)}>
-        {box7}
-      </div>
-      <div className="grid-item box9" onClick={() => turnClick(8)}>
-        {box8}
-      </div>
-   
-      <button onClick={makeEasy}>Easy</button>
-      <button onClick={makeHard}>Hard</button>
-    
-    </div>         
-  )
+    </div>
+  );
 
 }
 
-export default Unbeatable;
-
+export default AppBothModes;
