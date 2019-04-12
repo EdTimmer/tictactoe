@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import x from '../images/patrick.png';
 import o from '../images/spongebob4.png';
 import '../App.css';
-import Boxes2 from './Boxes2.js';
+import Boxes2 from './Boxes2';
+import Buttons from './Buttons';
 import ImageModal from './ImageModal';
 
 const AppBothModes = () => {
@@ -56,7 +57,9 @@ const AppBothModes = () => {
     box6: box6,
     box7: box7,
     box8: box8,
-  }
+  };
+
+  const timer = m => new Promise(r => setTimeout(r, m));
 
   const reset = () => {
     setBox0("");
@@ -81,25 +84,26 @@ const AppBothModes = () => {
     console.log('origBoard is: ', origBoard)
     if (!finishGame && typeof origBoard[square] == 'number') {
       turn(square, huPlayer)
-      if (!easyMode && !checkWin(origBoard, huPlayer) && !checkTie()) {  //insert here logic for easy/hard mode
-        turn(bestSpot(), aiPlayer);
+      if (!easyMode && !checkWin(origBoard, huPlayer) && !checkTie()) {  
+        (async () => {
+          await timer(500)
+          .then(() => turn(bestSpot(), aiPlayer));
+        })();
+        // turn(bestSpot(), aiPlayer);
       } 
       else if (easyMode && !checkWin(origBoard, huPlayer) && !checkTie()) {
         console.log('now in easy mode')
         let filtered = emptySquares();
         console.log('filtered is: ', filtered)
 
-        const getRandomInt = (min, max) => {
-          min = Math.ceil(min);
-          max = Math.floor(max);
-          return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
-
         let newIndex = getRandomInt(0, filtered.length - 1);
         let newSpot = filtered[newIndex];
-        console.log('newSpot is: ', newSpot)
-
-        turn(newSpot, aiPlayer);
+        // console.log('newSpot is: ', newSpot)
+        
+        (async () => {
+          await timer(500)
+          .then(() => turn(newSpot, aiPlayer));
+        })();
 
       }
     }
@@ -239,7 +243,11 @@ const AppBothModes = () => {
     setModalOpen(false);
   }
 
-
+  const getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
   return (
 
@@ -266,10 +274,7 @@ const AppBothModes = () => {
         </div>        
 
         <div className="right-bottom">
-          <div className="button" onClick={makeEasy}>EASY</div>
-          <div className="button" onClick={makeHard}>HARD</div>          
-          <div className="button" onClick={scary}>SCARY</div>
-          <div className="button" onClick={reset}>RESET</div>
+          <Buttons makeEasy={makeEasy} makeHard={makeHard} scary={scary} reset={reset} />
         </div>
         <ImageModal modalOpen={modalOpen} handleOpen={handleOpen} handleClose={handleClose} modalOpacity={modalOpacity} />
         </div>      
