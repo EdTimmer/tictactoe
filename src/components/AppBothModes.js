@@ -80,8 +80,6 @@ const AppBothModes = () => {
   }
 
   const turnClick = (square) => {
-    // console.log('endGame in turnClick is: ', endGame);
-    console.log('origBoard is: ', origBoard)
     if (!finishGame && typeof origBoard[square] == 'number') {
       turn(square, huPlayer)
       if (!easyMode && !checkWin(origBoard, huPlayer) && !checkTie()) {  
@@ -92,13 +90,10 @@ const AppBothModes = () => {
         // turn(bestSpot(), aiPlayer);
       } 
       else if (easyMode && !checkWin(origBoard, huPlayer) && !checkTie()) {
-        console.log('now in easy mode')
         let filtered = emptySquares();
-        console.log('filtered is: ', filtered)
 
         let newIndex = getRandomInt(0, filtered.length - 1);
         let newSpot = filtered[newIndex];
-        // console.log('newSpot is: ', newSpot)
         
         (async () => {
           await timer(500)
@@ -127,14 +122,12 @@ const AppBothModes = () => {
         break;
       }
     }
-    // endGame = true;
     return gameWon;
   }
   
   const gameOver = (gameWon) => {
-    setFinishGame(true);
-    // console.log('gameWon is: ', gameWon);
-    // console.log('endGame is: ', endGame);    
+    setFinishGame(true);    
+    gameWon.player === huPlayer ? setMessage("You Win!") : setMessage("You lose.");
     
   }
 
@@ -143,12 +136,12 @@ const AppBothModes = () => {
   }
   
   const bestSpot = () => {
-    // console.log('minimax result dot index: ', minimax(origBoard, aiPlayer));
     return minimax(origBoard, aiPlayer).index;
   }
   
   function checkTie() {
     if (emptySquares().length === 0) {
+      setMessage("Tie Game!")
       // declareWinner("Tie Game!")
       return true;
     }
@@ -216,7 +209,6 @@ const AppBothModes = () => {
 
 
   const scary = () => {
-    // console.log('scary run')
     handleOpen();
 
     const timer = m => new Promise(r => setTimeout(r, m));
@@ -274,7 +266,7 @@ const AppBothModes = () => {
         </div>        
 
         <div className="right-bottom">
-          <Buttons makeEasy={makeEasy} makeHard={makeHard} scary={scary} reset={reset} />
+          <Buttons easyMode={easyMode} setEasyMode={setEasyMode} makeEasy={makeEasy} makeHard={makeHard} scary={scary} reset={reset} />
         </div>
         <ImageModal modalOpen={modalOpen} handleOpen={handleOpen} handleClose={handleClose} modalOpacity={modalOpacity} />
         </div>      
