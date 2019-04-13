@@ -2,198 +2,215 @@ import React, { useState, useEffect, useRef } from 'react';
 import x from '../images/patrick.png';
 import o from '../images/spongebob4.png';
 import '../App.css';
-import Boxes from './Boxes.js';
+import Squares from './Squares';
+import Buttons from './Buttons';
 import ImageModal from './ImageModal';
 
 const App = () => {
-  const [box1Sign, setBox1Sign] = useState("");
-  const [box2Sign, setBox2Sign] = useState("");
-  const [box3Sign, setBox3Sign] = useState("");
-  const [box4Sign, setBox4Sign] = useState("");
-  const [box5Sign, setBox5Sign] = useState("");
-  const [box6Sign, setBox6Sign] = useState("");
-  const [box7Sign, setBox7Sign] = useState("");
-  const [box8Sign, setBox8Sign] = useState("");
-  const [box9Sign, setBox9Sign] = useState("");
-  const [oShouldMove, setOShouldMove] = useState(false);
+  const [origBoard, setOrigBoard] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+  const [square0, setSquare0] = useState("");
+  const [square1, setSquare1] = useState("");
+  const [square2, setSquare2] = useState("");
+  const [square3, setSquare3] = useState("");
+  const [square4, setSquare4] = useState("");
+  const [square5, setSquare5] = useState("");
+  const [square6, setSquare6] = useState("");
+  const [square7, setSquare7] = useState("");
+  const [square8, setSquare8] = useState("");
+  const [finishGame, setFinishGame] = useState(false);
+  const [easyMode, setEasyMode] = useState(true);
   const [modalOpacity, setModalOpacity] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
-  const [settersObj, setSettersObj] = useState({
-    1: setBox1Sign,
-    2: setBox2Sign,
-    3: setBox3Sign,
-    4: setBox4Sign,
-    5: setBox5Sign,
-    6: setBox6Sign,
-    7: setBox7Sign,
-    8: setBox8Sign,
-    9: setBox9Sign
-  })
-  const [message, setMessage] = useState("I Am Ready!");
-  const [gameOver, setGameOver] = useState(false);
-  // const [endGame2, setEndGame2] = useState(false);
-
-  // let refValue = useRef(endGame2);
-  // console.log(refValue);
-
-  // let endGame = false;
+  const [message, setMessage] = useState("Game On!");
   
-  let signs = {
-    box1Sign: box1Sign,
-    box2Sign: box2Sign,
-    box3Sign: box3Sign,
-    box4Sign: box4Sign,
-    box5Sign: box5Sign,
-    box6Sign: box6Sign,
-    box7Sign: box7Sign,
-    box8Sign: box8Sign,
-    box9Sign: box9Sign
-  }
-
-  // useEffect(() => {
-  //   refValue.current = endGame2;
-  // }, [endGame2, box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign])
-
-  const xMove = (n) => {   
-    // console.log('endGame2 before x move', endGame2);
-    if (!checkForWin()) {
-      console.log('x move fired');
-      if (settersObj[n]) { 
-           
-        settersObj[n](x);
-
-        let newObj = Object.assign({}, settersObj);
-        delete newObj[n];
-        setSettersObj(newObj)
+  const huPlayer = x;
+  const aiPlayer = o;
+  const winCombos = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [6, 4, 2]
+  ];
+  const settersObj = {
+    0: setSquare0,
+    1: setSquare1,
+    2: setSquare2,
+    3: setSquare3,
+    4: setSquare4,
+    5: setSquare5,
+    6: setSquare6,
+    7: setSquare7,
+    8: setSquare8,
+  };
   
-        setOShouldMove(true);
-        
-        checkForWin();
-        // console.log('endGame2 after x move and checkForWin', endGame2);
+  let allSquares = {
+    square0: square0,
+    square1: square1,
+    square2: square2,
+    square3: square3,
+    square4: square4,
+    square5: square5,
+    square6: square6,
+    square7: square7,
+    square8: square8,
+  };
 
-      }
-    }     
-  }
+  const timer = m => new Promise(r => setTimeout(r, m));
 
   const reset = () => {
-    setBox1Sign("");
-    setBox2Sign("");
-    setBox3Sign("");
-    setBox4Sign("");
-    setBox5Sign("");
-    setBox6Sign("");
-    setBox7Sign("");
-    setBox8Sign("");
-    setBox9Sign("");    
-    setOShouldMove(false);
+    setSquare0("");
+    setSquare1("");
+    setSquare2("");
+    setSquare3("");
+    setSquare4("");
+    setSquare5("");
+    setSquare6("");
+    setSquare7("");
+    setSquare8("");
     setMessage("I Am Ready!");
-    // setEndGame2(false);
-    setGameOver(false);
     setModalOpacity(0);
     setModalOpen(false);
-    setSettersObj({
-      1: setBox1Sign,
-      2: setBox2Sign,
-      3: setBox3Sign,
-      4: setBox4Sign,
-      5: setBox5Sign,
-      6: setBox6Sign,
-      7: setBox7Sign,
-      8: setBox8Sign,
-      9: setBox9Sign
-    })
-    // endGame = false;
+    setOrigBoard([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+    setFinishGame(false);
+    setEasyMode(true);
   }
 
-const checkForWin = () => {
-  // console.log('checkForWin run!');
-    //horizontal win  
-    if (box1Sign !== "" && box1Sign === box2Sign && box2Sign === box3Sign) {      
-      setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      // endGame = true;
-      // setEndGame2(true);
-      setGameOver(true);
-      return true;
-    }
-    if (box4Sign !== "" && box4Sign === box5Sign && box5Sign === box6Sign) {
-      // let message = box4Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      setMessage(box4Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      // endGame = true;
-      // setEndGame2(true);
-      setGameOver(true);
-      return true;
-    }
-    if (box7Sign !== "" && box7Sign === box8Sign && box8Sign === box9Sign) {
-      // let message = box7Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      setMessage(box7Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      // endGame = true;
-      // setEndGame2(true);
-      setGameOver(true);
-      return true;
-    }
+  const turnClick = (square) => {
+    if (!finishGame && typeof origBoard[square] == 'number') {
+      turn(square, huPlayer)
+      if (!easyMode && !checkWin(origBoard, huPlayer) && !checkTie()) {  
+        (async () => {
+          await timer(500)
+          .then(() => turn(bestSpot(), aiPlayer));
+        })();
+        // turn(bestSpot(), aiPlayer);
+      } 
+      else if (easyMode && !checkWin(origBoard, huPlayer) && !checkTie()) {
+        let filtered = emptySquares();
 
-    //vertical win
-    if (box1Sign !== "" && box1Sign === box4Sign && box4Sign === box7Sign) {
-      // message = box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      // endGame = true;
-      // setEndGame2(true);
-      setGameOver(true);
-      return true;
-    }
-    if (box2Sign !== "" && box2Sign === box5Sign && box5Sign === box8Sign) {
-      // message = box2Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      setMessage(box2Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      // endGame = true;
-      // setEndGame2(true);
-      setGameOver(true);
-      return true;
-    }
-    if (box3Sign !== "" && box3Sign === box6Sign && box6Sign === box9Sign) {
-      // message = box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!";
-      setMessage(box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      // endGame = true;
-      // setEndGame2(true);
-      setGameOver(true);
-      return true;
-    }
+        let newIndex = getRandomInt(0, filtered.length - 1);
+        let newSpot = filtered[newIndex];
+        
+        (async () => {
+          await timer(500)
+          .then(() => turn(newSpot, aiPlayer));
+        })();
 
-    //diagonal win
-    if (box1Sign !== "" && box1Sign === box5Sign && box5Sign === box9Sign) {
-      // message = box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!";  
-      setMessage(box1Sign === x ? "Patrick Wins!" : "Spongebob Wins!");  
-      // endGame = true;
-      // setEndGame2(true);
-      setGameOver(true);
-      return true;
+      }
     }
-    if (box3Sign !== "" && box3Sign === box5Sign && box5Sign === box7Sign) {
-      // message = box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!";    
-      setMessage(box3Sign === x ? "Patrick Wins!" : "Spongebob Wins!");
-      // endGame = true;
-      // setEndGame2(true);
-      setGameOver(true);
-      return true;
-    }
+    
+  }
+  
+  const turn = (square, player) => {
+    origBoard[square] = player;
+    settersObj[square](player);    
+    let gameWon = checkWin(origBoard, player)
+    if (gameWon) gameOver(gameWon)
+  }
 
-    //draw
-    if (box1Sign !== "" && box2Sign !== "" && box3Sign !== "" && box4Sign !== "" && box5Sign !== "" && box6Sign !== "" && box7Sign !== "" && box8Sign !== "" && box9Sign !== "") {
-      // message = "Draw!";
-      setMessage("Draw!");
-      // endGame = true;
-      // setEndGame2(true);
-      setGameOver(true);
+  const checkWin = (board, player) => {
+    let plays = board.reduce((a, e, i) =>
+      (e === player) ? a.concat(i) : a, []);
+    let gameWon = null;
+    for (let [index, win] of winCombos.entries()) {
+      if (win.every(elem => plays.indexOf(elem) > -1)) {
+        gameWon = {index: index, player: player};
+        break;
+      }
+    }
+    return gameWon;
+  }
+  
+  const gameOver = (gameWon) => {
+    setFinishGame(true);    
+    gameWon.player === huPlayer ? setMessage("You Win!") : setMessage("You lose :(");
+    
+  }
+
+  const emptySquares = () => {
+    return origBoard.filter(s => typeof s == 'number');
+  }
+  
+  const bestSpot = () => {
+    return minimax(origBoard, aiPlayer).index;
+  }
+  
+  function checkTie() {
+    if (emptySquares().length === 0) {
+      setMessage("Tie Game!")
+      // declareWinner("Tie Game!")
       return true;
     }
-    else {
-      return false;
+    return false;
+  }
+
+  function minimax(newBoard, player) {
+    var availSpots = emptySquares();
+  
+    if (checkWin(newBoard, huPlayer)) {
+      return {score: -10};
+    } else if (checkWin(newBoard, aiPlayer)) {
+      return {score: 10};
+    } else if (availSpots.length === 0) {
+      return {score: 0};
     }
-    // console.log('endGame after checkForWin is: ', endGame)
-    // console.log('message after checkForWin is: ', message)
-  } 
+    var moves = [];
+    for (var i = 0; i < availSpots.length; i++) {
+      var move = {};
+      move.index = newBoard[availSpots[i]];
+      newBoard[availSpots[i]] = player;
+  
+      if (player === aiPlayer) {
+        var result = minimax(newBoard, huPlayer);
+        move.score = result.score;
+      } else {
+        var result = minimax(newBoard, aiPlayer);
+        move.score = result.score;
+      }
+  
+      newBoard[availSpots[i]] = move.index;
+  
+      moves.push(move);
+    }
+  
+    var bestMove;
+    if(player === aiPlayer) {
+      var bestScore = -10000;
+      for(var i = 0; i < moves.length; i++) {
+        if (moves[i].score > bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    } else {
+      var bestScore = 10000;
+      for(var i = 0; i < moves.length; i++) {
+        if (moves[i].score < bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    }
+  
+    return moves[bestMove];
+  }
+
+  const makeEasy = () => {
+    reset();
+    setEasyMode(true);
+  }
+
+  const makeHard = () => {
+    reset();
+    setEasyMode(false);
+  }  
+
 
   const scary = () => {
-    // console.log('scary run')
     handleOpen();
 
     const timer = m => new Promise(r => setTimeout(r, m));
@@ -220,71 +237,12 @@ const checkForWin = () => {
     setModalOpen(false);
   }
 
-  // useEffect(() => {
-  //   console.log('first useEffect run')
-  //   checkForWin();
-  // }, [gameOver])
+  const getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
-  useEffect(() => {    
-
-    checkForWin()
-    // console.log('refValue after first checkForWin is: ', refValue.current);
-    if (oShouldMove && !checkForWin()) {
-
-      console.log('o move fired');
-
-      const getRandomInt = (min, max) => {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
-  
-      let keysArr = Object.keys(settersObj);  
-      let randomNumber = getRandomInt(0, keysArr.length - 1);  
-      let oMoveKey = keysArr[randomNumber];
-      let nextOBoxSetter = settersObj[oMoveKey];
-
-      let newObj2 = Object.assign({}, settersObj);
-      delete newObj2[oMoveKey];
-      setSettersObj(newObj2)
-  
-      let keysArr2 = Object.keys(settersObj);  
-      if (keysArr2.length < 1) {
-        // setEndGame2(true);
-        // endGame = true;      
-        console.log('filled all spots')
-      }
-      else {
-        const timer = m => new Promise(r => setTimeout(r, m));
-        (async () => {
-          await timer(500)
-          .then(() => nextOBoxSetter(o));
-        })();
-        setOShouldMove(false);
-      }
-      // checkForWin();
-    }    
-    
-  }, [box1Sign, box2Sign, box3Sign, box4Sign, box5Sign, box6Sign, box7Sign, box8Sign, box9Sign])
-
-  // useEffect(() => {
-  //   console.log('third useEffect run')
-  // }, [])
-  console.log('gameOver at the end of the function is: ', gameOver);
-
-  // useEffect(() => {
-  //   if (message !== "I Am Ready!") {
-  //     setEndGame2(true);
-  //   }
-  // }, [message])
-
-  // console.log("endGame before last if is: ", endGame);
-
-  // if (message !== "I Am Ready!") {
-  //   console.log('the last if statement run')
-  //   // endGame = true;
-  // }
-  // console.log("endGame2 at the end is: ", endGame2);
   return (
 
     <div className="App">
@@ -295,7 +253,7 @@ const checkForWin = () => {
             <img src="https://fontmeme.com/permalink/190331/c4c4ee7256af7dbd791ebccdc22e3ff1.png" alt="logo2"/>
           </div>         
         
-          <Boxes signs={signs} xMove={xMove} />
+          <Squares allSquares={allSquares} turnClick={turnClick} />
 
       </div>
 
@@ -310,10 +268,7 @@ const checkForWin = () => {
         </div>        
 
         <div className="right-bottom">
-          <div className="button" onClick={scary}>EASY</div>
-          <div className="button" onClick={scary}>HARD</div>          
-          <div className="button" onClick={scary}>SCARY</div>
-          <div className="button" onClick={reset}>RESET</div>
+          <Buttons easyMode={easyMode} setEasyMode={setEasyMode} makeEasy={makeEasy} makeHard={makeHard} scary={scary} reset={reset} />
         </div>
         <ImageModal modalOpen={modalOpen} handleOpen={handleOpen} handleClose={handleClose} modalOpacity={modalOpacity} />
         </div>      

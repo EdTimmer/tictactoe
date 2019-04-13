@@ -91,7 +91,7 @@
 
 /* Blue color: #0457a0 */
 
-.box1 {
+.square0 {
   grid-column: 1/2;
   grid-row: 1/2;  
   /* border: 0.5rem solid #0457a0;   */
@@ -100,54 +100,54 @@
   border-radius: 1rem 0 0 0;
 }
 
-.box2 {
+.square1 {
   grid-column: 2/3;
   grid-row: 1/2;
   border-top:  0.5rem solid #0457a0;
   border-bottom:  0.5rem solid #0457a0;
 }
 
-.box3 {
+.square2 {
   grid-column: 3/4;
   grid-row: 1/2;  
   border:  0.5rem solid #0457a0;
   border-radius: 0 1rem 0 0;
 }
 
-.box4 {
+.square3 {
   grid-column: 1/2;
   grid-row: 2/3;  
   border-left:  0.5rem solid #0457a0;
   border-right:  0.5rem solid #0457a0;
 }
 
-.box5 {
+.square4 {
   grid-column: 2/3;
   grid-row: 2/3;  
 }
 
-.box6 {
+.square5 {
   grid-column: 3/4;
   grid-row: 2/3;  
   border-left:  0.5rem solid #0457a0;
   border-right:  0.5rem solid #0457a0;
 }
 
-.box7 {
+.square6 {
   grid-column: 1/2;
   grid-row: 3/4;  
   border:  0.5rem solid #0457a0;
   border-radius: 0 0 0 1rem;
 }
 
-.box8 {
+.square7 {
   grid-column: 2/3;
   grid-row: 3/4;  
   border-top:  0.5rem solid #0457a0;
   border-bottom:  0.5rem solid #0457a0;
 }
 
-.box9 {
+.square8 {
   grid-column: 3/4;
   grid-row: 3/4;
   border:  0.5rem solid #0457a0;  
@@ -155,7 +155,6 @@
 }
 
 .image {
-  /* height: 5rem; */
   width: 8rem;
 }
 
@@ -172,11 +171,7 @@
 
 .logo {
   padding-top: 5rem;
-  padding-bottom: 7rem;
-}
-
-.logo-image {
-  width: 35rem;
+  padding-bottom: 6rem;
 }
 
 .button {
@@ -195,32 +190,4 @@
   margin: 2rem auto;
   cursor: pointer;
   /* padding: 3rem; */
-}
-
-.selection {
-  width: 12rem;
-  height: 5rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-  border-radius: 2rem;
-  /* color: purple; */
-  color: #0457a0;
-  background-color: white;
-  border: 0.5rem solid #aead0d; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem auto;
-  cursor: pointer;
-  /* padding: 3rem; */
-}
-
-.radio {
-  /* background-color: #0457a0; */
-  border: 0.1rem solid black; 
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  margin-right: 1.5rem;
-
 }

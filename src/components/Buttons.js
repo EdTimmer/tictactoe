@@ -10,11 +10,11 @@ const styles = theme => ({
     margin: "2rem",
     border: "0.5rem solid #aead0d",
     width: "10rem",
-    height: "4rem",
+    height: "4.3rem",
     fontSize: "1.5rem",
     fontWeight: "bold",
     borderRadius: "2rem",
-    color: "white",
+    color: "yellow",
     background: "blue"
   },
 
@@ -27,12 +27,12 @@ const Buttons = ({ easyMode, setEasyMode, makeEasy, makeHard, scary, reset, clas
   return (
 
     <Fragment>
-    
-      <Button variant="outlined" className={classes.button} color="primary" onClick={makeEasy} style={{borderColor: selectedEasy}}>EASY</Button>
-      <Button variant="outlined" className={classes.button} color="primary" onClick={makeHard} style={{borderColor: selectedHard}}>HARD</Button>
 
-      <Button variant="outlined" className={classes.button} color="primary" onClick={scary}>SCARY</Button>
-      <Button variant="outlined" className={classes.button} color="primary" onClick={reset}>RESET</Button>
+      <Button variant="contained" className={classes.button} color="primary" onClick={makeEasy} style={{borderColor: selectedEasy}}>EASY</Button>
+      <Button variant="contained" className={classes.button} color="primary" onClick={makeHard} style={{borderColor: selectedHard}}>HARD</Button>
+
+      <Button variant="contained" className={classes.button} color="primary" onClick={scary}>SCARY</Button>
+      <Button variant="contained" className={classes.button} color="primary" onClick={reset}>RESET</Button>
     
     </Fragment>         
   );
