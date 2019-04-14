@@ -168,6 +168,11 @@ const App = () => {
   function checkTie() {
     if (emptySquares().length === 0) {
       setMessage("Tie Game!")
+      let newObject = Object.assign({}, allBackgrounds);
+      for (let i = 0; i < 9; i++) {
+        newObject[i] = "blue";
+      }
+      setAllBackgrounds(newObject);
       return true;
     }
     return false;
