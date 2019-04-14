@@ -82,7 +82,7 @@ const App = () => {
     setSquare6("");
     setSquare7("");
     setSquare8("");
-    setMessage("I Am Ready!");
+    setMessage("Game On!");
     setModalOpacity(0);
     setModalOpen(false);
     setOrigBoard([0, 1, 2, 3, 4, 5, 6, 7, 8]);
