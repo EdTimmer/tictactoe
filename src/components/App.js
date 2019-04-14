@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import x from '../images/patrick.png';
 import o from '../images/spongebob4.png';
 import '../App.css';
@@ -22,6 +22,17 @@ const App = () => {
   const [modalOpacity, setModalOpacity] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [message, setMessage] = useState("Game On!");
+  const [allBackgrounds, setAllBackgrounds] = useState({
+    0: "transparent",
+    1: "transparent",
+    2: "transparent",
+    3: "transparent",
+    4: "transparent",
+    5: "transparent",
+    6: "transparent",
+    7: "transparent",
+    8: "transparent",
+  });
   
   const huPlayer = x;
   const aiPlayer = o;
@@ -77,6 +88,17 @@ const App = () => {
     setOrigBoard([0, 1, 2, 3, 4, 5, 6, 7, 8]);
     setFinishGame(false);
     setEasyMode(true);
+    setAllBackgrounds({
+      0: "transparent",
+      1: "transparent",
+      2: "transparent",
+      3: "transparent",
+      4: "transparent",
+      5: "transparent",
+      6: "transparent",
+      7: "transparent",
+      8: "transparent",
+    })
   }
 
   const turnClick = (square) => {
@@ -86,8 +108,7 @@ const App = () => {
         (async () => {
           await timer(500)
           .then(() => turn(bestSpot(), aiPlayer));
-        })();
-        // turn(bestSpot(), aiPlayer);
+        })();        
       } 
       else if (easyMode && !checkWin(origBoard, huPlayer) && !checkTie()) {
         let filtered = emptySquares();
@@ -126,6 +147,11 @@ const App = () => {
   }
   
   const gameOver = (gameWon) => {
+    let newObject = Object.assign({}, allBackgrounds)
+    for (let index of winCombos[gameWon.index]) {
+      gameWon.player === huPlayer ? newObject[index] = "yellow" : newObject[index] = "green"
+      setAllBackgrounds(newObject)
+    }
     setFinishGame(true);    
     gameWon.player === huPlayer ? setMessage("You Win!") : setMessage("You lose :(");
     
@@ -142,7 +168,6 @@ const App = () => {
   function checkTie() {
     if (emptySquares().length === 0) {
       setMessage("Tie Game!")
-      // declareWinner("Tie Game!")
       return true;
     }
     return false;
@@ -253,7 +278,7 @@ const App = () => {
             <img src="https://fontmeme.com/permalink/190331/c4c4ee7256af7dbd791ebccdc22e3ff1.png" alt="logo2"/>
           </div>         
         
-          <Squares allSquares={allSquares} turnClick={turnClick} />
+          <Squares allSquares={allSquares} allBackgrounds={allBackgrounds} turnClick={turnClick} />
 
       </div>
 

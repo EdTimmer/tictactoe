@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -6,7 +6,6 @@ import '../App.css';
 
 const styles = theme => ({
   button: {
-    // margin: theme.spacing.unit,
     margin: "2rem",
     border: "0.5rem solid #aead0d",
     width: "10rem",
