@@ -3,20 +3,18 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import img1 from '../images/fly1.png';
+import img2 from '../images/fly2.png';
+import img3 from '../images/fly3.png';
 
 const styles = theme => ({
   paper: {
     // position: 'absolute',
     marginLeft: "auto",
     marginRight: "auto",
-    marginTop: "2rem",
+    marginTop: "1rem",
     marginBottom: "auto",
-    // width: theme.spacing.unit * 63,
     width: "60rem",
-    // height: "40rem",
-    // backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    // padding: theme.spacing.unit * 4,
     outline: 'none',
     display: "flex",    
     justifyContent: "center",
@@ -25,7 +23,10 @@ const styles = theme => ({
   },
 });
 
+
 const Image = ({modalOpen, handleClose, modalOpacity, classes, imageNumber}) => {
+
+  const images = [img2, img1, img3];
 
   return (
     <div>     
@@ -37,7 +38,7 @@ const Image = ({modalOpen, handleClose, modalOpacity, classes, imageNumber}) => 
       >
         
           <div style={{opacity: modalOpacity}} className={classes.paper}>          
-            <img src={img1} style={{ width: '55rem' }} alt="scary" />  
+            <img src={images[imageNumber]} style={{ maxHeight: '65rem', minHeight: '65rem', maxWidth: '80rem'}} alt="scary" />
           </div>      
         
       </Modal>

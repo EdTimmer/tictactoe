@@ -21,6 +21,7 @@ const App = () => {
   const [easyMode, setEasyMode] = useState(true);
   const [modalOpacity, setModalOpacity] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+  const [imageNumber, setImageNumber] = useState(0);
   const [message, setMessage] = useState("Game On!");
   const [allBackgrounds, setAllBackgrounds] = useState({
     0: "transparent",
@@ -85,6 +86,7 @@ const App = () => {
     setMessage("Game On!");
     setModalOpacity(0);
     setModalOpen(false);
+    setImageNumber(0);
     setOrigBoard([0, 1, 2, 3, 4, 5, 6, 7, 8]);
     setFinishGame(false);
     setEasyMode(true);
@@ -259,6 +261,7 @@ const App = () => {
   }
 
   const handleOpen = () => {
+    changeImage();
     setModalOpen(true);
     setModalOpacity(1);
   }
@@ -271,6 +274,15 @@ const App = () => {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  const changeImage = () => {
+    if (imageNumber < 2) {
+      setImageNumber(imageNumber + 1);
+    }
+    else {
+      setImageNumber(0)
+    }
   }
 
   return (
@@ -300,7 +312,7 @@ const App = () => {
         <div className="right-bottom">
           <Buttons easyMode={easyMode} setEasyMode={setEasyMode} makeEasy={makeEasy} makeHard={makeHard} scary={scary} reset={reset} />
         </div>
-        <ImageModal modalOpen={modalOpen} handleOpen={handleOpen} handleClose={handleClose} modalOpacity={modalOpacity} />
+        <ImageModal modalOpen={modalOpen} handleOpen={handleOpen} handleClose={handleClose} modalOpacity={modalOpacity} imageNumber={imageNumber}/>
         </div>      
 
       </div>
