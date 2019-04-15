@@ -89,7 +89,7 @@ const App = () => {
     setImageNumber(0);
     setOrigBoard([0, 1, 2, 3, 4, 5, 6, 7, 8]);
     setFinishGame(false);
-    setEasyMode(true);
+    // setEasyMode(true);
     setAllBackgrounds({
       0: "transparent",
       1: "transparent",
