@@ -38,7 +38,7 @@ const Image = ({modalOpen, handleClose, modalOpacity, classes, imageNumber}) => 
       >
         
           <div style={{opacity: modalOpacity}} className={classes.paper}>          
-            <img src={images[imageNumber]} style={{ maxHeight: '65rem', minHeight: '65rem', maxWidth: '80rem'}} alt="scary" />
+            <img src={images[imageNumber]} style={{ maxHeight: '80vh', minHeight: '80vh', maxWidth: '80rem'}} alt="scary" />
           </div>      
         
       </Modal>
